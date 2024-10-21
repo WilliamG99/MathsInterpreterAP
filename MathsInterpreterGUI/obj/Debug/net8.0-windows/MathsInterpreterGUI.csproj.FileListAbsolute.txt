@@ -37,3 +37,4 @@ C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\MathsInterpreterGUI.pdb
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\MathsInterpreterGUI.genruntimeconfig.cache
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\ref\MathsInterpreterGUI.dll
+C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\MathsInterpreterGUI.sourcelink.json

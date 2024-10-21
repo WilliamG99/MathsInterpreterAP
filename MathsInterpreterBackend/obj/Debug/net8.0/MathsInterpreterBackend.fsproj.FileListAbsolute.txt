@@ -11,3 +11,4 @@ C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterBackend
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.xml
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.pdb
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterBackend\obj\Debug\net8.0\ref\MathsInterpreterBackend.dll
+C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.sourcelink.json
