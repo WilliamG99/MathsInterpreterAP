@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Su2Bqn3YeawTl4mdRzhR/3s/puLfOoWWAKyTeMUwuIV8oMep3T9whWNfA2kwWA2ySKpyA/u2ODMMO+/nOVLeWg==",
+  "success": true,
+  "projectFilePath": "C:\\UniWork\\Year3.2\\Advanced Programming\\MathsInterpreter\\MathsInterpreterGUI\\MathsInterpreterGUI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\TruWill\\.nuget\\packages\\fsharp.core\\8.0.200\\fsharp.core.8.0.200.nupkg.sha512"
+  ],
+  "logs": []
+}
