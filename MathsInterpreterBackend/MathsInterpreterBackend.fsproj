@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <Compile Include="interpreter.fs" />
+    <Compile Include="lexer.fs" />
+    <Compile Include="parser.fs" />
   </ItemGroup>
 
 </Project>

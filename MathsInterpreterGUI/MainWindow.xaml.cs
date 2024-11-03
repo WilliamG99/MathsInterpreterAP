@@ -36,7 +36,7 @@ namespace MathsInterpreterGUI
             try
             {
                 // F# function "EvaluateExpression"
-                var result = MathsInterpreterBackend.Evaluator.EvaluateExpression(expression);
+                var result = MathsInterpreterBackend.Parser.ParseExpression(expression);
                 ResultTextBlock.Text = $"Result: {result}";
             }
             catch (Exception ex) 
