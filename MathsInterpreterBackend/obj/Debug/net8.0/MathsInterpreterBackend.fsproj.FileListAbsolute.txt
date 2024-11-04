@@ -12,3 +12,17 @@ C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterBackend
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.pdb
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterBackend\obj\Debug\net8.0\ref\MathsInterpreterBackend.dll
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.sourcelink.json
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\bin\Debug\net8.0\MathsInterpreterBackend.deps.json
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\bin\Debug\net8.0\MathsInterpreterBackend.dll
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\bin\Debug\net8.0\MathsInterpreterBackend.pdb
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\bin\Debug\net8.0\MathsInterpreterBackend.xml
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.fsproj.AssemblyReference.cache
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.AssemblyInfoInputs.cache
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.AssemblyInfo.fs
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.fsproj.CoreCompileInputs.cache
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.sourcelink.json
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.dll
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\obj\Debug\net8.0\refint\MathsInterpreterBackend.dll
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.xml
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\obj\Debug\net8.0\MathsInterpreterBackend.pdb
+C:\Users\Ellie\Source\Repos\WilliamG99\MathsInterpreterAP\MathsInterpreterBackend\obj\Debug\net8.0\ref\MathsInterpreterBackend.dll
