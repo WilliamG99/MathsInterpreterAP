@@ -10,6 +10,7 @@ module Lexer =
         | MULTIPLY
         | DIVIDE
         | REMAINDER
+        | POWER
         | LPAREN
         | RPAREN
 
@@ -31,8 +32,9 @@ module Lexer =
             | [] -> []
             | '+' :: tail -> PLUS :: scan tail     
             | '-' :: tail -> MINUS :: scan tail    
-            | '*' :: tail -> MULTIPLY :: scan tail 
+            | '*' :: tail -> MULTIPLY :: scan tail
             | '/' :: tail -> DIVIDE :: scan tail
+            | '^' :: tail -> POWER :: scan tail
             | '('::tail -> LPAREN:: scan tail
             | ')'::tail -> RPAREN:: scan tail
             | c :: tail when isBlank c -> scan tail

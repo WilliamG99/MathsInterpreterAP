@@ -22,24 +22,36 @@ module Parser =
                 Eopt (tLst, subtractNumbers value tval)
             | _ -> (tList, value)
 
-        and T tList = (NR >> Topt) tList
+        // Term - multiplication & division
+        and T tList = (P >> Topt) tList
         and Topt (tList, value) =
             match tList with
             | MULTIPLY :: tail ->
-                let (tLst, tval) = T tail
+                let (tLst, tval) = P tail
                 Topt (tLst, multiplyNumbers value tval)
             | DIVIDE :: tail ->
-                let (tLst, tval) = T tail
+                let (tLst, tval) = P tail
                 Topt (tLst, divideNumbers value tval)
             | _ -> (tList, value)
 
+        // Power - exponent operations
+        and P tList = (NR >> Popt) tList
+        and Popt (tList, value) =
+            match tList with
+            | POWER :: tail ->
+                let (tLst, tval) = NR tail
+                Popt (tLst, powerNumbers value tval)
+            | _ -> (tList, value)
+
+        // Numeric/Parenthesized
         and NR tList =
             match tList with
             | INTEGER value :: tail -> (tail, value)
-            | LPAREN :: tail -> let (tLst, tval) = E tail
-                                match tLst with 
-                                | RPAREN :: tail -> (tail, tval)
-                                | _ -> raise parseError
+            | LPAREN :: tail -> 
+                let (tLst, tval) = E tail
+                match tLst with 
+                | RPAREN :: tail -> (tail, tval)
+                | _ -> raise parseError
             | _ -> raise parseError
         E tList
 

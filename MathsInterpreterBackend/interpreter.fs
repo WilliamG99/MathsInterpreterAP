@@ -22,4 +22,7 @@ module Interpreter =
         match (a, b) with
         | (x, y) -> (x / y)
 
-            
+
+    let powerNumbers a b =
+        match (a, b) with
+        | (x, y) -> (System.Convert.ToInt32(System.Math.Pow(float x, float y)))
