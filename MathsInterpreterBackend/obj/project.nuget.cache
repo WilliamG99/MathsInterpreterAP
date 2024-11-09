@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "iE6MfYsPaCM=",
+  "dgSpecHash": "hCwaHY2TdH80K9RgcjEyVr/l4R7cJJZbVaQ43Xokc8oOB8wCEaHYejmGZuaMIKf9HVqVXdPJvESigAgBbm6gSQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Ellie\\Source\\Repos\\WilliamG99\\MathsInterpreterAP\\MathsInterpreterBackend\\MathsInterpreterBackend.fsproj",
+  "projectFilePath": "C:\\UniWork\\Year3.2\\Advanced Programming\\MathsInterpreter\\MathsInterpreterBackend\\MathsInterpreterBackend.fsproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Ellie\\.nuget\\packages\\fsharp.core\\8.0.401\\fsharp.core.8.0.401.nupkg.sha512"
+    "C:\\Users\\TruWill\\.nuget\\packages\\fsharp.core\\8.0.200\\fsharp.core.8.0.200.nupkg.sha512"
   ],
   "logs": []
 }

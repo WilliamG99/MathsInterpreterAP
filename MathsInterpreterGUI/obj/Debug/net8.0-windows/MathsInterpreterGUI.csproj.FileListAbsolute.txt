@@ -24,7 +24,6 @@ C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\MainWindow.g.cs
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\App.g.cs
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\MathsInterpreterGUI_MarkupCompile.cache
-C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\MathsInterpreterGUI_MarkupCompile.lref
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\MainWindow.baml
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\MathsInterpreterGUI.g.resources
 C:\UniWork\Year3.2\Advanced Programming\MathsInterpreter\MathsInterpreterGUI\obj\Debug\net8.0-windows\MathsInterpreterGUI.GeneratedMSBuildEditorConfig.editorconfig

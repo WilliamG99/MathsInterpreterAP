@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Interpreter.fs" />
     <Compile Include="Lexer.fs" />
     <Compile Include="Parser.fs" />
-    <Compile Include="interpreter.fs" />
   </ItemGroup>
 
 </Project>

@@ -15,13 +15,9 @@ namespace MathsInterpreterGUI
 
         private void CalculateButton_Click(object sender, RoutedEventArgs e)
         {
-            string expression = ExpressionTextBox.Text;
-
             try
             {
-                var tokens = MathsInterpreterBackend.Lexer.lexer(expression);
-                var resultTuple = MathsInterpreterBackend.Parser.parseNeval(tokens);
-                int result = ((Tuple<FSharpList<MathsInterpreterBackend.Lexer.terminal>, int>)resultTuple).Item2;
+                int result = MathsInterpreterBackend.Parser.interpret(ExpressionTextBox.Text);
 
                 ResultTextBlock.Text = $"Result: {result}";
                 ErrorTextBlock.Text = "";
