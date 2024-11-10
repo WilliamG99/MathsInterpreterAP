@@ -6,6 +6,16 @@ module Parser =
     open Lexer
     open Interpreter
 
+
+
+    // Grammar in BNF:
+// <E>        ::= <T> <Eopt>
+// <Eopt>     ::= "+" <T> <Eopt> | "-" <T> <Eopt> | <empty>
+// <T>        ::= <NR> <Topt>
+// <Topt>     ::= "*" <NR> <Topt> | "/" <NR> <Topt> | <empty>
+// <NR>       ::= "Num" <value> | "(" <E> ")"
+
+
     let parseError = System.Exception("Parser error")
 
     let evaluateExpression tList =

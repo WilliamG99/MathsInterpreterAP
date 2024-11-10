@@ -1,4 +1,9 @@
-﻿// interpreter.fs
+﻿// interpreter with f#
+// Author: Elise & Alan
+// Date: 09/11/24
+// Reference: Peter Sestoft, Grammars and parsing with F#, Tech. Report 
+
+// interpreter.fs
 namespace MathsInterpreterBackend
 
 module Interpreter =

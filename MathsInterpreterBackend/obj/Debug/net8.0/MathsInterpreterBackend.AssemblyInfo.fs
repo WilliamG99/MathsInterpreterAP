@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("MathsInterpreterBackend")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97dbf0c703fc87fa6c8b127138b46cfc8f8afdd4")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+47924356925cd38de16c89941e8a2c253bf46d9d")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("MathsInterpreterBackend")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("MathsInterpreterBackend")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]

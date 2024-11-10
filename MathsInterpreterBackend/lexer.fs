@@ -53,18 +53,15 @@ module Lexer =
             | '*' :: tail -> MULTIPLY :: scan tail
             | '/' :: tail -> DIVIDE :: scan tail
             | '^' :: tail -> POWER :: scan tail
-            | '('::tail -> LPAREN:: scan tail
-            | ')'::tail -> RPAREN:: scan tail
+            | '(' :: tail -> LPAREN :: scan tail
+            | ')' :: tail -> RPAREN :: scan tail
             | c :: tail when isBlank c -> scan tail
             | c :: tail when isDigit c ->
                 let (iStr, iVal) = scFloat(c :: tail, "")
-                if iVal.Contains(".") then
-                    FLOAT (float iVal) :: scan iStr
-                else
-                    INTEGER (int iVal) :: scan iStr
+                FLOAT (float iVal) :: scan iStr  // Always create FLOAT token
             | c :: tail when isPi c -> PI :: scan tail 
-
             | c :: tail when isVarable c -> VARABLE c :: scan tail
-            | _ -> raise lexError                   // Raise an error for unrecognized characters
+            | _ -> raise lexError  // Raise an error for unrecognized characters
 
         scan (str2lst input)
+
