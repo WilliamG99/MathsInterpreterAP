@@ -17,12 +17,22 @@ namespace MathsInterpreterGUI
         {
             try
             {
-                // Store the result as double to capture decimal precision from F#
-                double result = MathsInterpreterBackend.Parser.interpret(ExpressionTextBox.Text);
+                string input = ExpressionTextBox.Text;
 
-                // Format the result to display with decimal places
-                ResultTextBlock.Text = $"Result: {result:F2}";  // Display with 2 decimal places
-                ErrorTextBlock.Text = "";
+                if (input.Contains("="))
+                {
+                    // Use the equation solver for inputs with '='
+                    string result = MathsInterpreterBackend.Solver.solveLinearEquation(input);
+                    ResultTextBlock.Text = $"Result: {result:F2}";
+                }
+                else
+                {
+                    // Regular expression evaluation
+                    double result = MathsInterpreterBackend.Parser.interpret(input);
+                    ResultTextBlock.Text = $"Result: {result:F2}";  // Display with 2 decimal places
+                }
+
+                ErrorTextBlock.Text = ""; // Clear error message if calculation is successful
             }
             catch (Exception ex)
             {
@@ -30,6 +40,8 @@ namespace MathsInterpreterGUI
                 ResultTextBlock.Text = "";
             }
         }
+
+
 
 
         private void ExpressionTextBox_TextChanged(object sender, TextChangedEventArgs e)

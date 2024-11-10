@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MathsInterpreterGUI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+28b314196760e6be631c6213b41b1dfb8226fefd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97dbf0c703fc87fa6c8b127138b46cfc8f8afdd4")]
 [assembly: System.Reflection.AssemblyProductAttribute("MathsInterpreterGUI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MathsInterpreterGUI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
