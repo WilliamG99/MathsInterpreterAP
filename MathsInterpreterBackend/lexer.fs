@@ -5,14 +5,17 @@ module Lexer =
 
     type Token =
         | INTEGER of int
+        | FLOAT of float
         | PLUS
         | MINUS
         | MULTIPLY
         | DIVIDE
         | REMAINDER
-        | POWER
+        | POWER 
         | LPAREN
-        | RPAREN
+        | RPAREN //adding power and brackets in 
+        | PI 
+        | VARABLE of char  //assing pi and letters into the tokens
 
     let lexError = System.Exception("Lexer error")
 
@@ -21,10 +24,25 @@ module Lexer =
     let isDigit c = System.Char.IsDigit c
     let intVal (c:char) = (int)((int)c - (int)'0')
 
-    let rec scInt(iStr, iVal) = 
+    //let rec scInt(iStr, iVal) = 
+    //    match iStr with
+    //    c :: tail when isDigit c -> scInt(tail, 10*iVal+(intVal c))
+    //    | _ -> (iStr, iVal)
+
+    let rec scFloat(iStr, iVal) =
         match iStr with
-        c :: tail when isDigit c -> scInt(tail, 10*iVal+(intVal c))
+        | c :: tail when System.Char.IsDigit c -> scFloat(tail, iVal + string c)
+        | '.' :: tail -> 
+            let (rest, fracPart) = scFloat(tail, "")
+            (rest, iVal + "." + fracPart)
         | _ -> (iStr, iVal)
+
+    let isPi c = c = 'π'
+
+    let isVarable c = 
+    // Check if the character is a letter, excluding specific cases like π
+        System.Char.IsLetter c && c <> 'π'
+
 
     let lexer (input: string) =
         let rec scan input =
@@ -39,8 +57,14 @@ module Lexer =
             | ')'::tail -> RPAREN:: scan tail
             | c :: tail when isBlank c -> scan tail
             | c :: tail when isDigit c ->
-                let (iStr, iVal) = scInt(tail, intVal c)
-                INTEGER iVal :: scan iStr
+                let (iStr, iVal) = scFloat(c :: tail, "")
+                if iVal.Contains(".") then
+                    FLOAT (float iVal) :: scan iStr
+                else
+                    INTEGER (int iVal) :: scan iStr
+            | c :: tail when isPi c -> PI :: scan tail 
+
+            | c :: tail when isVarable c -> VARABLE c :: scan tail
             | _ -> raise lexError                   // Raise an error for unrecognized characters
 
         scan (str2lst input)

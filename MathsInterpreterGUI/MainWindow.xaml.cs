@@ -17,9 +17,11 @@ namespace MathsInterpreterGUI
         {
             try
             {
-                int result = MathsInterpreterBackend.Parser.interpret(ExpressionTextBox.Text);
+                // Store the result as double to capture decimal precision from F#
+                double result = MathsInterpreterBackend.Parser.interpret(ExpressionTextBox.Text);
 
-                ResultTextBlock.Text = $"Result: {result}";
+                // Format the result to display with decimal places
+                ResultTextBlock.Text = $"Result: {result:F2}";  // Display with 2 decimal places
                 ErrorTextBlock.Text = "";
             }
             catch (Exception ex)
@@ -28,6 +30,7 @@ namespace MathsInterpreterGUI
                 ResultTextBlock.Text = "";
             }
         }
+
 
         private void ExpressionTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

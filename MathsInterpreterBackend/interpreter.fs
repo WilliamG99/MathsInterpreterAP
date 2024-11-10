@@ -3,26 +3,19 @@ namespace MathsInterpreterBackend
 
 module Interpreter =
 
-    let addNumbers a b =
-        match (a, b) with
-        | (x, y) -> (x + y)
+    let piValue = System.Math.PI // Using F# System.Math for π
 
+    let addNumbers (a: float) (b: float) : float =
+        a + b
 
-    let subtractNumbers a b =
-        match (a, b) with
-        | (x, y) -> (x - y)
+    let subtractNumbers (a: float) (b: float) : float =
+        a - b
 
+    let multiplyNumbers (a: float) (b: float) : float =
+        a * b
 
-    let multiplyNumbers a b =
-        match (a, b) with
-        | (x, y) -> (x * y)
+    let divideNumbers (a: float) (b: float) : float =
+        a / b
 
-
-    let divideNumbers a b =
-        match (a, b) with
-        | (x, y) -> (x / y)
-
-
-    let powerNumbers a b =
-        match (a, b) with
-        | (x, y) -> (System.Convert.ToInt32(System.Math.Pow(float x, float y)))
+    let powerNumbers (a: float) (b: float) : float =
+        System.Math.Pow(a, b)
