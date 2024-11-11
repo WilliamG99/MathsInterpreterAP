@@ -10,17 +10,41 @@ module Interpreter =
 
     let piValue = System.Math.PI // Using F# System.Math for π
 
-    let addNumbers (a: float) (b: float) : float =
-        a + b
+    type Number =
+    | Int of int
+    | Float of float
 
-    let subtractNumbers (a: float) (b: float) : float =
-        a - b
+    let addNumbers a b =
+        match (a, b) with
+        | (Int x, Int y) -> Int (x + y)
+        | (Float x, Float y) -> Float (x + y)
+        | (Int x, Float y) -> Float ((float x) + y)
+        | (Float x, Int y) -> Float (x + (float y))
 
-    let multiplyNumbers (a: float) (b: float) : float =
-        a * b
+    let subtractNumbers a b =
+        match (a, b) with
+        | (Int x, Int y) -> Int (x - y)
+        | (Float x, Float y) -> Float (x - y)
+        | (Int x, Float y) -> Float ((float x) - y)
+        | (Float x, Int y) -> Float (x - (float y))
 
-    let divideNumbers (a: float) (b: float) : float =
-        a / b
+    let multiplyNumbers a b =
+        match (a, b) with
+        | (Int x, Int y) -> Int (x * y)
+        | (Float x, Float y) -> Float (x * y)
+        | (Int x, Float y) -> Float ((float x) * y)
+        | (Float x, Int y) -> Float (x * (float y))
 
-    let powerNumbers (a: float) (b: float) : float =
-        System.Math.Pow(a, b)
+    let divideNumbers a b =
+        match (a, b) with
+        | (Int x, Int y) -> Int (x / y)
+        | (Float x, Float y) -> Float (x / y)
+        | (Int x, Float y) -> Float ((float x) / y)
+        | (Float x, Int y) -> Float (x / (float y))
+
+    let powerNumbers a b =
+        match (a, b) with
+        | (Int x, Int y) -> Int (System.Convert.ToInt32(System.Math.Pow(float x, float y)))
+        | (Float x, Float y) -> Float (System.Math.Pow(x, y))
+        | (Int x, Float y) -> Float (System.Math.Pow((float x), y))
+        | (Float x, Int y) -> Float (System.Math.Pow(x, (float y)))

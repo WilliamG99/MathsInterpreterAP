@@ -17,19 +17,17 @@ namespace MathsInterpreterGUI
         {
             try
             {
-                string input = ExpressionTextBox.Text;
-
-                if (input.Contains("="))
-                {
-                    // Use the equation solver for inputs with '='
-                    string result = MathsInterpreterBackend.Solver.solveLinearEquation(input);
-                    ResultTextBlock.Text = $"Result: {result:F2}";
-                }
-                else
+                //if (ExpressionTextBox.Text.Contains("="))
+                //{
+                //    // Use the equation solver for inputs with '='
+                //    var result = MathsInterpreterBackend.Solver.solveLinearEquation(ExpressionTextBox.Text);
+                //    ResultTextBlock.Text = $"Result: {result}";
+                //}
+                //else
                 {
                     // Regular expression evaluation
-                    double result = MathsInterpreterBackend.Parser.interpret(input);
-                    ResultTextBlock.Text = $"Result: {result:F2}";  // Display with 2 decimal places
+                    var result = MathsInterpreterBackend.Parser.interpret(ExpressionTextBox.Text);
+                    ResultTextBlock.Text = "= " + result.ToString();
                 }
 
                 ErrorTextBlock.Text = ""; // Clear error message if calculation is successful

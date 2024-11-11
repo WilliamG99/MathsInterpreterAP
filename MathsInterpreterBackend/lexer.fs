@@ -14,34 +14,37 @@ module Lexer =
         | POWER 
         | LPAREN
         | RPAREN //adding power and brackets in 
-        | PI 
-        | VARABLE of char  //assing pi and letters into the tokens
+        | PI
+        | EQUATION
+        | VARIABLE of string  //assing pi and letters into the tokens
 
     let lexError = System.Exception("Lexer error")
 
     let str2lst s = [for c in s -> c]
     let isBlank c = System.Char.IsWhiteSpace c
     let isDigit c = System.Char.IsDigit c
+    let isChar  c = System.Char.IsLetter c           // Checks if character is a letter
     let intVal (c:char) = (int)((int)c - (int)'0')
 
-    //let rec scInt(iStr, iVal) = 
-    //    match iStr with
-    //    c :: tail when isDigit c -> scInt(tail, 10*iVal+(intVal c))
-    //    | _ -> (iStr, iVal)
-
-    let rec scFloat(iStr, iVal) =
+    let rec scInt (iStr, iVal) = 
         match iStr with
-        | c :: tail when System.Char.IsDigit c -> scFloat(tail, iVal + string c)
-        | '.' :: tail -> 
-            let (rest, fracPart) = scFloat(tail, "")
-            (rest, iVal + "." + fracPart)
+        | c::tail when isDigit c -> scInt(tail, 10*iVal+(intVal c))
         | _ -> (iStr, iVal)
+
+    let rec scFloat fStr fVal factor =
+        match fStr with
+        | c::tail when isDigit c -> 
+            let newFVal = fVal + ((float (intVal c)) / factor)
+            scFloat tail newFVal (factor * 10.0)
+        | _ -> (fStr, fVal)
 
     let isPi c = c = 'π'
 
-    let isVarable c = 
-    // Check if the character is a letter, excluding specific cases like π
-        System.Char.IsLetter c && c <> 'π'
+    // For parsing variable identidiers
+    let rec scChar(iStr, vName:string) =
+        match iStr with
+        | c::tail when isChar c -> scChar(tail, vName + c.ToString())
+        | _ -> (iStr, vName)
 
 
     let lexer (input: string) =
@@ -55,12 +58,19 @@ module Lexer =
             | '^' :: tail -> POWER :: scan tail
             | '(' :: tail -> LPAREN :: scan tail
             | ')' :: tail -> RPAREN :: scan tail
+            | '=' :: tail -> EQUATION :: scan tail
             | c :: tail when isBlank c -> scan tail
             | c :: tail when isDigit c ->
-                let (iStr, iVal) = scFloat(c :: tail, "")
-                FLOAT (float iVal) :: scan iStr  // Always create FLOAT token
+                let (iStr, iVal) = scInt(tail, intVal c)
+                match iStr with
+                | '.' :: dTail ->
+                    let (fStr, fVal) = scFloat dTail 0.0 10.0
+                    FLOAT ((float iVal) + fVal) :: scan fStr
+                | _ -> INTEGER iVal :: scan iStr
             | c :: tail when isPi c -> PI :: scan tail 
-            | c :: tail when isVarable c -> VARABLE c :: scan tail
+            | c :: tail when isChar c -> 
+                let (iStr, vName) = scChar(tail, c.ToString())
+                VARIABLE vName :: scan iStr
             | _ -> raise lexError  // Raise an error for unrecognized characters
 
         scan (str2lst input)

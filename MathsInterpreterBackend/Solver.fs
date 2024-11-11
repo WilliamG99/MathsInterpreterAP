@@ -44,7 +44,7 @@ module Solver =
     let rec evaluate tokens (constSum, varSum, varSymbol) =
         match tokens with
         | [] -> (constSum, varSum, varSymbol)
-        | FLOAT value :: VARABLE symbol :: tail ->
+        | FLOAT value :: VARIABLE symbol :: tail ->
             let updatedSymbol = match varSymbol with
                                 | None -> Some symbol
                                 | Some existingSymbol when existingSymbol = symbol -> varSymbol
@@ -52,7 +52,7 @@ module Solver =
             evaluate tail (constSum, varSum + value, updatedSymbol)
         | FLOAT value :: tail -> evaluate tail (constSum + value, varSum, varSymbol)
         | PLUS :: tail -> evaluate tail (constSum, varSum, varSymbol)
-        | MINUS :: FLOAT value :: VARABLE symbol :: tail ->
+        | MINUS :: FLOAT value :: VARIABLE symbol :: tail ->
             let updatedSymbol = match varSymbol with
                                 | None -> Some symbol
                                 | Some existingSymbol when existingSymbol = symbol -> varSymbol
