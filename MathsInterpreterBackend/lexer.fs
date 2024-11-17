@@ -17,6 +17,8 @@ module Lexer =
         | PI
         | EQUATION
         | VARIABLE of string  //assing pi and letters into the tokens
+        | TYPEINT
+        | TYPEFLOAT
 
     let lexError = System.Exception("Lexer error")
 
@@ -38,8 +40,6 @@ module Lexer =
             scFloat tail newFVal (factor * 10.0)
         | _ -> (fStr, fVal)
 
-    let isPi c = c = 'π'
-
     // For parsing variable identidiers
     let rec scChar(iStr, vName:string) =
         match iStr with
@@ -59,6 +59,9 @@ module Lexer =
             | '(' :: tail -> LPAREN :: scan tail
             | ')' :: tail -> RPAREN :: scan tail
             | '=' :: tail -> EQUATION :: scan tail
+            | 'p' :: 'i' :: tail -> PI :: scan tail
+            | 'i' :: 'n' :: 't' :: ' ' :: tail -> TYPEINT :: scan tail
+            | 'f' :: 'l' :: 'o' :: 'a' :: 't' :: ' ' :: tail -> TYPEFLOAT :: scan tail
             | c :: tail when isBlank c -> scan tail
             | c :: tail when isDigit c ->
                 let (iStr, iVal) = scInt(tail, intVal c)
@@ -67,7 +70,6 @@ module Lexer =
                     let (fStr, fVal) = scFloat dTail 0.0 10.0
                     FLOAT ((float iVal) + fVal) :: scan fStr
                 | _ -> INTEGER iVal :: scan iStr
-            | c :: tail when isPi c -> PI :: scan tail 
             | c :: tail when isChar c -> 
                 let (iStr, vName) = scChar(tail, c.ToString())
                 VARIABLE vName :: scan iStr

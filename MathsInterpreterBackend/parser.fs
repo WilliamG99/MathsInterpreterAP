@@ -82,15 +82,41 @@ module Parser =
         // Numeric/Parenthesized
         and NR tList =
             match tList with
+
+            // Implicit Multiplication
+            | FLOAT value :: LPAREN :: tail ->
+                let newTail = FLOAT value :: MULTIPLY :: LPAREN :: tail
+                let (tLst, tval) = E newTail
+                (tLst, tval)
+            | FLOAT value :: VARIABLE vName :: tail ->
+                let newTail = FLOAT value :: MULTIPLY :: VARIABLE vName :: tail
+                let (tLst, tval) = E newTail
+                (tLst, tval)
+            | INTEGER value :: LPAREN :: tail ->
+                let newTail = INTEGER value :: MULTIPLY :: LPAREN :: tail
+                let (tLst, tval) = E newTail
+                (tLst, tval)
+            | INTEGER value :: VARIABLE vName :: tail ->
+                let newTail = INTEGER value :: MULTIPLY :: VARIABLE vName :: tail
+                let (tLst, tval) = E newTail
+                (tLst, tval)
+            | VARIABLE vName :: LPAREN :: tail ->
+                let newTail = VARIABLE vName :: MULTIPLY :: LPAREN :: tail
+                let (tLst, tval) = E newTail
+                (tLst, tval)
+
             | INTEGER value :: tail -> (tail, Int(value))
             | FLOAT value :: tail -> (tail, Float(value))
             | VARIABLE vName :: tail ->
                 let variableValue = lookupVariable vName
                 (tail, variableValue)
             | LPAREN :: tail -> 
-                let (tLst, tval) = E tail
-                match tLst with 
-                | RPAREN :: tail -> (tail, tval)
+                let (tLst, leftval) = E tail
+                match tLst with
+                | RPAREN :: LPAREN :: tail ->
+                    let newTail = RPAREN :: MULTIPLY :: LPAREN :: tail
+                    (newTail, leftval)
+                | RPAREN :: tail -> (tail, leftval)
                 | _ -> raise parseError
             | PI :: tail -> (tail, Float(Interpreter.piValue))     // Use piValue directly
             | _ -> raise parseError
@@ -98,15 +124,24 @@ module Parser =
         // Variable Assignment & for loop expressions
         let VA tList =
             match tList with
-            | VARIABLE vName :: EQUATION :: tail ->
+            // Update the symbol table with the variable 
+            | TYPEINT :: VARIABLE vName :: EQUATION :: tail ->
+                let (tLst, tval) = E tail
+                match tval with
+                | Int x ->
+                    symbolTable <- Map.add vName tval symbolTable
+                    (tLst, tval)
+                | Float x ->
+                    let itval = Int(int x)
+                    symbolTable <- Map.add vName itval symbolTable
+                    (tLst, itval)
+            | TYPEFLOAT :: VARIABLE vName :: EQUATION :: tail ->
                 let (tLst, tval) = E tail
                 match tval with
                 | Float x -> 
-                    // Update the symbol table with the variable assignment
                     symbolTable <- Map.add vName tval symbolTable
                     (tLst, tval)
                 | Int x -> 
-                    // Update the symbol table with the variable assignment
                     let ftval = Float(float x)
                     symbolTable <- Map.add vName ftval symbolTable
                     (tLst, ftval)
