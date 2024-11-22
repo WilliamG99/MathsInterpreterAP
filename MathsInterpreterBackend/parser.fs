@@ -110,6 +110,9 @@ module Parser =
             | VARIABLE vName :: tail ->
                 let variableValue = lookupVariable vName
                 (tail, variableValue)
+            | MINUS :: tail ->
+                let (tLst, tval) = NR tail
+                (tLst, negateNumber tval)
             | LPAREN :: tail -> 
                 let (tLst, leftval) = E tail
                 match tLst with

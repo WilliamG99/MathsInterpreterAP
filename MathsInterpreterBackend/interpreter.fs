@@ -48,3 +48,9 @@ module Interpreter =
         | (Float x, Float y) -> Float (System.Math.Pow(x, y))
         | (Int x, Float y) -> Float (System.Math.Pow((float x), y))
         | (Float x, Int y) -> Float (System.Math.Pow(x, (float y)))
+
+    let negateNumber a =
+        match a with
+        | Int x -> Int (-x)
+        | Float x -> Float (-x)
+
