@@ -86,22 +86,8 @@ namespace MathsInterpreterGUI
             try
             {
 
-                if (ExpressionTextBox.Text.Contains("="))
-                {
-                    // Solve equations using the backend solver
-
-                    var result = MathsInterpreterBackend.Solver.solveLinearEquation(ExpressionTextBox.Text);
-                    ResultTextBlock.Text = $"Result: {result}";
-
-                }
-                else
-                {
-                    // Interpret expressions using the backend parser
-
-                    var result = MathsInterpreterBackend.Parser.interpret(ExpressionTextBox.Text);
-                    ResultTextBlock.Text = "= " + result.ToString();
-
-                }
+                var result = MathsInterpreterBackend.Parser.interpret(ExpressionTextBox.Text);
+                ResultTextBlock.Text = "= " + result.ToString();
 
                 ErrorTextBlock.Text = ""; // Clear any previous error messages
             }
