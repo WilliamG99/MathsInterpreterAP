@@ -91,7 +91,7 @@
                         Background="#4CAF50"
                         BorderThickness="1"
                         BorderBrush="#222"
-                        Margin="2,480,2,2"
+                        Margin="2,440,2,2"
                         Click="CalculateButton_Click"/>
                     <!-- Debug Output Remove the comments to have a debug panel, this panel covers most of the page-->
                     <!--<TextBlock x:Name="DebugTextBlock"

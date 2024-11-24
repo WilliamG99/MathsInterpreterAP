@@ -85,27 +85,22 @@ namespace MathsInterpreterGUI
         {
             try
             {
-                DebugTextBlock.Text += "Starting calculation...\n";
 
                 if (ExpressionTextBox.Text.Contains("="))
                 {
                     // Solve equations using the backend solver
-                    DebugTextBlock.Text += $"Input: {ExpressionTextBox.Text}\n";
 
                     var result = MathsInterpreterBackend.Solver.solveLinearEquation(ExpressionTextBox.Text);
                     ResultTextBlock.Text = $"Result: {result}";
 
-                    DebugTextBlock.Text += $"Result: {result}\n";
                 }
                 else
                 {
                     // Interpret expressions using the backend parser
-                    DebugTextBlock.Text += $"Parsing input: {ExpressionTextBox.Text}\n";
 
                     var result = MathsInterpreterBackend.Parser.interpret(ExpressionTextBox.Text);
                     ResultTextBlock.Text = "= " + result.ToString();
 
-                    DebugTextBlock.Text += $"Parsed result: {result}\n";
                 }
 
                 ErrorTextBlock.Text = ""; // Clear any previous error messages
@@ -116,11 +111,6 @@ namespace MathsInterpreterGUI
                 ErrorTextBlock.Text = $"Error: {ex.Message}";
                 ResultTextBlock.Text = "";
 
-                // Log error/debug messages in DebugTextBlock
-                DebugTextBlock.Text += $"Debug: {ex.Message}\n";
-
-                // Optional: Log stack trace for deeper debugging
-                DebugTextBlock.Text += $"Stack Trace: {ex.StackTrace}\n";
             }
         }
 
