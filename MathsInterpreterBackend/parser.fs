@@ -34,6 +34,7 @@ module Parser =
                 match v with
                 | Int i -> i.ToString(), "Int"
                 | Float f -> f.ToString(), "Float"
+                | Rational r -> r.ToString(), "Rational"
             { Key = k; Value = v; Type = valueType }
         )
 
@@ -68,6 +69,9 @@ module Parser =
             | DIVIDE :: tail ->
                 let (tLst, tval) = P tail
                 Topt (tLst, divideNumbers value tval)
+            | MODULO :: tail ->
+                let (tLst, tval) = P tail
+                Topt (tLst, moduloNumbers value tval)
             | _ -> (tList, value)
 
         // Power - exponent operations
@@ -82,6 +86,12 @@ module Parser =
         // Numeric/Parenthesized
         and NR tList =
             match tList with
+
+            // Represebt Rational Numbers as Fraction
+            | INTEGER numerator :: FRACTION :: INTEGER denominator :: tail ->
+                let newTail = RATIONAL {Numerator = numerator; Denominator = denominator} :: tail
+                let (tLst, tval) = E newTail
+                (tLst, tval)
 
             // Implicit Multiplication
             | FLOAT value :: LPAREN :: tail ->
@@ -107,6 +117,7 @@ module Parser =
 
             | INTEGER value :: tail -> (tail, Int(value))
             | FLOAT value :: tail -> (tail, Float(value))
+            | RATIONAL value :: tail -> (tail, Rational(value))
             | VARIABLE vName :: tail ->
                 let variableValue = lookupVariable vName
                 (tail, variableValue)
@@ -124,7 +135,7 @@ module Parser =
             | PI :: tail -> (tail, Float(Interpreter.piValue))     // Use piValue directly
             | _ -> raise parseError
 
-        // Variable Assignment & for loop expressions
+        // Variable Assignment
         let VA tList =
             match tList with
             // Update the symbol table with the variable 
@@ -138,6 +149,8 @@ module Parser =
                     let itval = Int(int x)
                     symbolTable <- Map.add vName itval symbolTable
                     (tLst, itval)
+                | Rational x ->
+                    raise (System.Exception("Cannot assign a Rational as an Integer"))
             | TYPEFLOAT :: VARIABLE vName :: EQUATION :: tail ->
                 let (tLst, tval) = E tail
                 match tval with
@@ -148,6 +161,17 @@ module Parser =
                     let ftval = Float(float x)
                     symbolTable <- Map.add vName ftval symbolTable
                     (tLst, ftval)
+                | Rational x ->
+                    raise (System.Exception("Cannot assign a Rational as an Float"))
+            | TYPERATIONAL :: VARIABLE vName :: EQUATION :: tail ->
+                let (tLst, tval) = E tail
+                match tval with
+                | Rational x ->
+                    symbolTable <- Map.add vName tval symbolTable
+                    (tLst, tval)
+                | _ ->
+                    raise (System.Exception("Can only assign a rational"))
+
             | _ -> (E tList)
         VA tList
 

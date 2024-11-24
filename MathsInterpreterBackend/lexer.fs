@@ -1,17 +1,22 @@
 ﻿// lexer.fs
 namespace MathsInterpreterBackend
 
+open Interpreter
+
 module Lexer = 
 
     type Token =
         | INTEGER of int
         | FLOAT of float
+        | RATIONAL of Rational
         | PLUS
         | MINUS
         | MULTIPLY
         | DIVIDE
+        | MODULO
+        | FRACTION
         | REMAINDER
-        | POWER 
+        | POWER
         | LPAREN
         | RPAREN //adding power and brackets in 
         | PI
@@ -19,6 +24,7 @@ module Lexer =
         | VARIABLE of string  //assing pi and letters into the tokens
         | TYPEINT
         | TYPEFLOAT
+        | TYPERATIONAL
 
     let lexError = System.Exception("Lexer error")
 
@@ -52,9 +58,11 @@ module Lexer =
             match input with
             | [] -> []
             | '+' :: tail -> PLUS :: scan tail     
-            | '-' :: tail -> MINUS :: scan tail    
+            | '-' :: tail -> MINUS :: scan tail
             | '*' :: tail -> MULTIPLY :: scan tail
-            | '/' :: tail -> DIVIDE :: scan tail
+            | '÷' :: tail -> DIVIDE :: scan tail
+            | '/' :: tail -> FRACTION :: scan tail
+            | '%' :: tail -> MODULO :: scan tail
             | '^' :: tail -> POWER :: scan tail
             | '(' :: tail -> LPAREN :: scan tail
             | ')' :: tail -> RPAREN :: scan tail
@@ -62,6 +70,8 @@ module Lexer =
             | 'p' :: 'i' :: tail -> PI :: scan tail
             | 'i' :: 'n' :: 't' :: ' ' :: tail -> TYPEINT :: scan tail
             | 'f' :: 'l' :: 'o' :: 'a' :: 't' :: ' ' :: tail -> TYPEFLOAT :: scan tail
+            | 'r' :: 'a' :: 't' :: 'i' :: 'o' :: 'n' :: 'a' :: 'l' :: ' ' :: tail -> TYPERATIONAL :: scan tail
+            | 'r' :: 'a' :: 't' :: ' ' :: tail -> TYPERATIONAL :: scan tail
             | c :: tail when isBlank c -> scan tail
             | c :: tail when isDigit c ->
                 let (iStr, iVal) = scInt(tail, intVal c)
