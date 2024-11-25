@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using OxyPlot;
 using OxyPlot.Series;
 using OxyPlot.Axes;
+using System.Text.RegularExpressions;
 
 namespace MathsInterpreterGUI
 {
@@ -153,7 +154,9 @@ namespace MathsInterpreterGUI
         /// </summary>
         private void InitializePlot()
         {
+            System.Diagnostics.Debug.WriteLine("Initializing PlotModel...");
             plotModel = new PlotModel { Title = "Graph" };
+
             plotModel.Axes.Add(new LinearAxis
             {
                 Position = AxisPosition.Bottom,
@@ -163,6 +166,7 @@ namespace MathsInterpreterGUI
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot
             });
+
             plotModel.Axes.Add(new LinearAxis
             {
                 Position = AxisPosition.Left,
@@ -172,7 +176,9 @@ namespace MathsInterpreterGUI
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot
             });
+
             PlotView.Model = plotModel;
+            System.Diagnostics.Debug.WriteLine("PlotModel initialized.");
         }
 
         /// <summary>
@@ -183,36 +189,41 @@ namespace MathsInterpreterGUI
             try
             {
                 string equation = GraphEquationInput.Text;
+                System.Diagnostics.Debug.WriteLine($"Button clicked. Parsing equation: {equation}");
 
+                var (isQuadratic, a, b, c) = ParseEquation(equation);
 
-                // Parse equation and determine if linear or quadratic
-                var (isLinear, slope, intercept, a, b, c) = ParseEquation(equation);
-
-                if (isLinear)
+                if (isQuadratic)
                 {
-                    PlotLine(slope, intercept);
+                    System.Diagnostics.Debug.WriteLine($"Detected quadratic equation. Coefficients: a={a}, b={b}, c={c}");
+                    PlotCurve(a, b, c);
                 }
                 else
                 {
-                    PlotCurve(a, b, c);
+                    System.Diagnostics.Debug.WriteLine($"Detected linear equation. Coefficients: slope={b}, intercept={c}");
+                    PlotLine(b, c);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Invalid equation: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Diagnostics.Debug.WriteLine($"Error in OnPlotLineClick: {ex.Message}");
+                MessageBox.Show($"Invalid input: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         /// <summary>
         /// Plots a linear equation given the slope and intercept.
         /// </summary>
         private void PlotLine(double slope, double intercept)
         {
+            System.Diagnostics.Debug.WriteLine($"Plotting line with slope={slope}, intercept={intercept}");
+            //LoadSymbolTable();
             plotModel.Series.Clear();
 
             var lineSeries = new LineSeries
             {
-                Title = $"y = {slope}x + {intercept}",
+                Title = $"y = {slope}x {((intercept >= 0) ? $"+ {intercept}" : $"{intercept}")}",
                 StrokeThickness = 2
             };
 
@@ -224,6 +235,7 @@ namespace MathsInterpreterGUI
 
             plotModel.Series.Add(lineSeries);
             plotModel.InvalidatePlot(true);
+            System.Diagnostics.Debug.WriteLine("Line plot completed.");
         }
 
         /// <summary>
@@ -231,11 +243,13 @@ namespace MathsInterpreterGUI
         /// </summary>
         private void PlotCurve(double a, double b, double c)
         {
+            System.Diagnostics.Debug.WriteLine($"Plotting curve with coefficients: a={a}, b={b}, c={c}");
+            //LoadSymbolTable();
             plotModel.Series.Clear();
 
             var curveSeries = new LineSeries
             {
-                Title = $"y = {a}x² + {b}x + {c}",
+                Title = $"y = {a}x² {((b >= 0) ? $"+ {b}" : $"{b}")}x {((c >= 0) ? $"+ {c}" : $"{c}")}",
                 StrokeThickness = 2
             };
 
@@ -247,43 +261,68 @@ namespace MathsInterpreterGUI
 
             plotModel.Series.Add(curveSeries);
             plotModel.InvalidatePlot(true);
+            System.Diagnostics.Debug.WriteLine("Curve plot completed.");
         }
 
         /// <summary>
         /// Parses an equation and determines whether it is linear or quadratic.
         /// </summary>
-        private (bool isLinear, double slope, double intercept, double a, double b, double c) ParseEquation(string equation)
+        private (bool isQuadratic, double a, double b, double c) ParseEquation(string equation)
         {
-            equation = equation.Replace(" ", "");
+            System.Diagnostics.Debug.WriteLine($"Parsing Equation: {equation}");
 
-            if (equation.StartsWith("y="))
-            {
-                equation = equation.Substring(2);
-            }
+            // Sanitize input to normalize formatting (optional, if inconsistent user inputs are a problem)
+            equation = equation.Replace(" ", ""); // Remove all spaces
+            equation = equation.Replace("²", "^2"); // Normalize "²" to "^2"
 
-            if (equation.Contains("x²") || equation.Contains("x^2"))
-            {
-                var match = System.Text.RegularExpressions.Regex.Match(equation, @"(?<a>[-+]?\d*\.?\d*)x\^2(?<b>[-+]?\d*\.?\d*)x(?<c>[-+]?\d+\.?\d*)");
-                if (match.Success)
-                {
-                    double a = double.TryParse(match.Groups["a"].Value, out a) ? a : 1;
-                    double b = double.TryParse(match.Groups["b"].Value, out b) ? b : 0;
-                    double c = double.TryParse(match.Groups["c"].Value, out c) ? c : 0;
-                    return (false, 0, 0, a, b, c);
-                }
-            }
-            else if (equation.Contains("x"))
-            {
-                var match = System.Text.RegularExpressions.Regex.Match(equation, @"(?<m>[-+]?\d*\.?\d*)x(?<c>[-+]?\d*\.?\d*)");
-                if (match.Success)
-                {
-                    double slope = double.TryParse(match.Groups["m"].Value, out slope) ? slope : 1;
-                    double intercept = double.TryParse(match.Groups["c"].Value, out intercept) ? intercept : 0;
-                    return (true, slope, intercept, 0, 0, 0);
-                }
-            }
+            // Regex for quadratic equations
+            var quadraticRegex = new Regex(@"y\s*=\s*(?<a>[-+]?\d*\.?\d+)?x(\^2|²)(\s*(?<b>[-+]\s*\d*\.?\d+)?x)?(\s*(?<c>[-+]\s*\d*\.?\d+)?)?$");
 
-            throw new FormatException("Invalid equation format. Use 'y=ax+b' or 'y=ax²+bx+c'.");
+            // Regex for linear equations
+            var linearRegex = new Regex(@"y\s*=\s*(?<b>[-+]?\d*\.?\d+|[-+]?)x\s*(?<c>[-+]\s*\d*\.?\d+)?$");
+
+            // Regex for constant equations (y = c)
+            var constantRegex = new Regex(@"y\s*=\s*(?<c>[-+]?\d*\.?\d+)$");
+
+            // Match quadratic equations
+            if (quadraticRegex.IsMatch(equation))
+            {
+                System.Diagnostics.Debug.WriteLine("Quadratic equation matched.");
+                var match = quadraticRegex.Match(equation);
+
+                double a = match.Groups["a"].Success ? double.Parse(match.Groups["a"].Value) : 1;
+                double b = match.Groups["b"].Success ? double.Parse(match.Groups["b"].Value.Replace(" ", "")) : 0;
+                double c = match.Groups["c"].Success ? double.Parse(match.Groups["c"].Value.Replace(" ", "")) : 0;
+
+                System.Diagnostics.Debug.WriteLine($"Parsed coefficients: a={a}, b={b}, c={c}");
+                return (true, a, b, c);
+            }
+            else if (linearRegex.IsMatch(equation))
+            {
+                System.Diagnostics.Debug.WriteLine("Linear equation matched.");
+                var match = linearRegex.Match(equation);
+
+                double slope = match.Groups["b"].Success ? (match.Groups["b"].Value == "-" ? -1 : double.Parse(match.Groups["b"].Value)) : 1;
+                double intercept = match.Groups["c"].Success ? double.Parse(match.Groups["c"].Value.Replace(" ", "")) : 0;
+
+                System.Diagnostics.Debug.WriteLine($"Parsed coefficients: slope={slope}, intercept={intercept}");
+                return (false, 0, slope, intercept);
+            }
+            else if (constantRegex.IsMatch(equation))
+            {
+                System.Diagnostics.Debug.WriteLine("Constant equation matched.");
+                var match = constantRegex.Match(equation);
+
+                double c = double.Parse(match.Groups["c"].Value);
+
+                System.Diagnostics.Debug.WriteLine($"Parsed constant: c={c}");
+                return (false, 0, 0, c); // No x term means slope and quadratic coefficient are 0
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Equation did not match any pattern.");
+                throw new ArgumentException("Invalid equation format. Use the form 'y = ax + b' or 'y = ax² + bx + c'.");
+            }
         }
     }
 }
