@@ -83,13 +83,19 @@ module Parser =
                 Popt (tLst, powerNumbers value tval)
             | _ -> (tList, value)
 
-        // Numeric/Parenthesized
+        // Numeric/Parenthesized/NumberTypes
         and NR tList =
             match tList with
 
-            // Represebt Rational Numbers as Fraction
+            // Represebt Fraction as a Rational Number
             | INTEGER numerator :: FRACTION :: INTEGER denominator :: tail ->
                 let newTail = RATIONAL {Numerator = numerator; Denominator = denominator} :: tail
+                let (tLst, tval) = E newTail
+                (tLst, tval)
+
+            // Represent Real and Imaginary Numbers as a Complex Number
+            | LPAREN :: INTEGER real :: PLUS :: INTEGER imaginary :: IMAGINARY :: RPAREN :: tail ->
+                let newTail = COMPLEX {Real = real; Imaginary = imaginary} :: tail
                 let (tLst, tval) = E newTail
                 (tLst, tval)
 
@@ -118,6 +124,7 @@ module Parser =
             | INTEGER value :: tail -> (tail, Int(value))
             | FLOAT value :: tail -> (tail, Float(value))
             | RATIONAL value :: tail -> (tail, Rational(value))
+            | COMPLEX value :: tail -> (tail, Complex(value))
             | VARIABLE vName :: tail ->
                 let variableValue = lookupVariable vName
                 (tail, variableValue)
@@ -178,7 +185,16 @@ module Parser =
     let interpret (input: string) =
         let tokens = lexer input
         let _, result = evaluateExpression tokens
-        result
+        match result with
+        | Rational rational ->
+            let newResult = rational.Numerator.ToString() + "/" + rational.Denominator.ToString()
+            newResult
+        | Complex complex ->
+            let newResult = complex.Real.ToString() + " + " + complex.Imaginary.ToString() + "i"
+            newResult
+        | _ ->
+            result.ToString()
+
 
 
     let getSymbolList () =

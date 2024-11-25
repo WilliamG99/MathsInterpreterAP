@@ -6,11 +6,13 @@ module Interpreter =
     let piValue = System.Math.PI // Using F# System.Math for π
 
     type Rational = {Numerator: int; Denominator: int}
+    type Complex = {Real: int; Imaginary: int}
 
     type Number =
     | Int of int
     | Float of float
     | Rational of Rational
+    | Complex of Complex
 
 
     let rec gcf a b =
@@ -41,6 +43,22 @@ module Interpreter =
         simplifyRational{ Numerator = numerator; Denominator = denominator }
 
 
+    let addComplex c1 c2 =
+        let real = (c1.Real + c2.Real)
+        let imaginary = (c1.Imaginary + c2.Imaginary)
+        { Real = real; Imaginary = imaginary }
+
+    let subtractComplex c1 c2 =
+        let real = (c1.Real - c2.Real)
+        let imaginary = (c1.Imaginary - c2.Imaginary)
+        { Real = real; Imaginary = imaginary }
+
+    let multiplyComplex c1 c2 =
+        let real = (c1.Real * c2.Real)-(c1.Imaginary * c2.Imaginary)
+        let imaginary = (c1.Real * c2.Imaginary) + (c1.Imaginary * c2.Real)
+        { Real = real; Imaginary = imaginary }
+
+
     let addNumbers a b =
         match (a, b) with
         | (Int x, Int y) -> Int (x + y)
@@ -52,9 +70,17 @@ module Interpreter =
         | (Rational x, Int y) -> Rational (addRationals x {Numerator = y; Denominator = 1})
         | (Int x, Rational y) -> Rational (addRationals {Numerator = x; Denominator = 1} y)
 
+        | (Complex x, Complex y) -> Complex (addComplex x y)
+        //| (Complex x, Int y) -> Complex (addComplex x {Real = y; Imaginary = 0})
+        //| (Int x, Complex y) -> Complex (addComplex {Real = x; Imaginary = 0} y)
+
         // Handle invalid case: Float and Rational mixed
         | (Float _, Rational _) | (Rational _, Float _) -> 
             raise (System.Exception("Cannot use Float with a Rational number"))
+
+        // Handle invalid case: Float and Compelex mixed
+        | (Float _, Complex _) | (Complex _, Float _) -> 
+            raise (System.Exception("Cannot use Float with a Complex number"))
 
     let subtractNumbers a b =
         match (a, b) with
@@ -67,9 +93,19 @@ module Interpreter =
         | (Rational x, Int y) -> Rational (subtractRationals x {Numerator = y; Denominator = 1})
         | (Int x, Rational y) -> Rational (subtractRationals {Numerator = x; Denominator = 1} y)
 
+        | (Complex x, Complex y) -> Complex (subtractComplex x y)
+        | (Complex x, Int y) -> Complex (subtractComplex x {Real = y; Imaginary = 0})
+        | (Int x, Complex y) -> Complex (subtractComplex {Real = x; Imaginary = 0} y)
+        //| (Complex x, Float y) -> Complex (addComplex x {Real = y; Imaginary = 0})
+        //| (Float x, Complex y) -> Complex (addComplex {Real = x; Imaginary = 0} y)
+
         // Handle invalid case: Float and Rational mixed
         | (Float _, Rational _) | (Rational _, Float _) -> 
             raise (System.Exception("Cannot use Float with a Rational number"))
+
+        // Handle invalid case: Float and Compelex mixed
+        | (Float _, Complex _) | (Complex _, Float _) -> 
+            raise (System.Exception("Cannot use Float with a Complex number"))
 
     let multiplyNumbers a b =
         match (a, b) with
@@ -81,6 +117,10 @@ module Interpreter =
         | (Rational x, Rational y) -> Rational (multiplyRationals x y)
         | (Rational x, Int y) -> Rational (multiplyRationals x {Numerator = y; Denominator = 1})
         | (Int x, Rational y) -> Rational (multiplyRationals {Numerator = x; Denominator = 1} y)
+
+        | (Complex x, Complex y) -> Complex (multiplyComplex x y)
+        | (Complex x, Int y) -> Complex (multiplyComplex x {Real = y; Imaginary = 0})
+        | (Int x, Complex y) -> Complex (multiplyComplex {Real = x; Imaginary = 0} y)
 
         // Handle invalid case: Float and Rational mixed
         | (Float _, Rational _) | (Rational _, Float _) -> 

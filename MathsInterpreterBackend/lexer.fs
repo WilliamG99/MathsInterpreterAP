@@ -9,22 +9,25 @@ module Lexer =
         | INTEGER of int
         | FLOAT of float
         | RATIONAL of Rational
+        | COMPLEX of Complex
         | PLUS
         | MINUS
         | MULTIPLY
         | DIVIDE
         | MODULO
-        | FRACTION
+        | FRACTION              // For rationals
         | REMAINDER
         | POWER
+        | IMAGINARY             // For complex numbers
         | LPAREN
-        | RPAREN //adding power and brackets in 
+        | RPAREN
         | PI
         | EQUATION
         | VARIABLE of string  //assing pi and letters into the tokens
         | TYPEINT
         | TYPEFLOAT
         | TYPERATIONAL
+        | TYPECOMPLEX
 
     let lexError = System.Exception("Lexer error")
 
@@ -61,9 +64,9 @@ module Lexer =
             | '-' :: tail -> MINUS :: scan tail
             | '*' :: tail -> MULTIPLY :: scan tail
             | '÷' :: tail -> DIVIDE :: scan tail
-            | '/' :: tail -> FRACTION :: scan tail
             | '%' :: tail -> MODULO :: scan tail
             | '^' :: tail -> POWER :: scan tail
+            | '/' :: tail -> FRACTION :: scan tail
             | '(' :: tail -> LPAREN :: scan tail
             | ')' :: tail -> RPAREN :: scan tail
             | '=' :: tail -> EQUATION :: scan tail
@@ -73,6 +76,7 @@ module Lexer =
             | 'f' :: 'l' :: 'o' :: 'a' :: 't' :: ' ' :: tail -> TYPEFLOAT :: scan tail
             | 'r' :: 'a' :: 't' :: 'i' :: 'o' :: 'n' :: 'a' :: 'l' :: ' ' :: tail -> TYPERATIONAL :: scan tail
             | 'r' :: 'a' :: 't' :: ' ' :: tail -> TYPERATIONAL :: scan tail
+            | 'i' :: tail -> IMAGINARY :: scan tail
             | c :: tail when isBlank c -> scan tail
             | c :: tail when isDigit c ->
                 let (iStr, iVal) = scInt(tail, intVal c)
