@@ -18,7 +18,7 @@
                     <!-- Input Field -->
                     <Border Grid.Row="0" Background="#1E1E1E" CornerRadius="5" Margin="0,0,0,10">
                         <TextBox x:Name="ExpressionTextBox" FontSize="20" Height="50" VerticalContentAlignment="Center" Padding="10"
-                             Foreground="White" Background="#1E1E1E" BorderBrush="Transparent" HorizontalAlignment="Stretch"/>
+                 Foreground="White" Background="#1E1E1E" BorderBrush="Transparent" HorizontalAlignment="Stretch"/>
                     </Border>
 
                     <!-- Result and Error Display -->
@@ -30,40 +30,59 @@
                     </Border>
 
                     <!-- Buttons -->
-                    <UniformGrid Grid.Row="2" Rows="5" Columns="4" Margin="0,10,0,0">
-                        <!-- Functional Buttons -->
-                        <Button Content="π" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Insert Pi (π)" />
-                        <Button Content="√" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Insert Square Root" />
-                        <Button Content="C" FontSize="16" Foreground="White" Background="#FF6666" Margin="2" Click="ClearButton_Click" ToolTip="Clear Input" />
-                        <Button Content="/" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Divide" />
+                    <UniformGrid Grid.Row="2" Rows="6" Columns="5" Margin="0,10,0,0">
 
+                        <!-- New Type Buttons -->
+                        <Button Content="int " FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Type: Integer" />
+                        <Button Content="float " FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Type: Float" />
+                        <Button Content="rat " FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Type: Rational" />
+                        <!-- Add Operation Buttons -->
+
+                        <Button Content="π" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Insert Pi (π)" />
+                        <Button Content="C" FontSize="16" Foreground="White" Background="#FF6666" Margin="2" Click="ClearButton_Click" ToolTip="Clear Input" />
+
+                        <Button Content="Sin " FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Type: Cossign" />
+                        <Button Content="Cos " FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Type: Integer" />
+                        <Button Content="Tan " FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Type: Integer" />
+                        <Button Content="(" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Left Parenthesis" />
+                        <Button Content=")" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Right Parenthesis" />
                         <!-- Number Buttons -->
                         <Button x:Name="Num7Button" Content="7" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
                         <Button x:Name="Num8Button" Content="8" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
                         <Button x:Name="Num9Button" Content="9" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
-                        <Button Content="*" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Multiply" />
+                        <Button Content="-" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Subtract" />
+                        <Button Content="+" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Add" />
 
                         <Button x:Name="Num4Button" Content="4" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
                         <Button x:Name="Num5Button" Content="5" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
                         <Button x:Name="Num6Button" Content="6" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
-                        <Button Content="-" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Subtract" />
+                        <Button Content="^" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Power" />
+                        <Button Content="/" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Divide" />
 
                         <Button x:Name="Num1Button" Content="1" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
                         <Button x:Name="Num2Button" Content="2" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
                         <Button x:Name="Num3Button" Content="3" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
-                        <Button Content="+" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Add" />
+                        <Button Content="√" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Insert Square Root" />
+                        <Button Content="*" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Multiply" />
+
+
+                        <Button Content="%" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Modulo" />
 
                         <Button x:Name="Num0Button" Content="0" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
                         <Button Content="." FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Decimal Point" />
                         <Button Content="=" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Equal Symbol" />
+
                         <Button x:Name="ToggleModeButton" Content="x↔1" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="ToggleModeButton_Click" ToolTip="Switch Modes" />
+
+
                     </UniformGrid>
 
                     <!-- Calculate Button -->
                     <Button Content="Calculate" Grid.Row="3" FontSize="16" Foreground="White" Background="#4CAF50" Margin="0,2,0,0"
-                        HorizontalAlignment="Stretch" Click="CalculateButton_Click" ToolTip="Perform Calculation" />
+                HorizontalAlignment="Stretch" Click="CalculateButton_Click" ToolTip="Perform Calculation" />
                 </Grid>
             </TabItem>
+
 
             <!-- Tab 2: Table -->
             <TabItem Header="Table">
