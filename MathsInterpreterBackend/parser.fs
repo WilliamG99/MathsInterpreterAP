@@ -181,6 +181,16 @@ module Parser =
         result
 
 
+    let getSymbolList () =
+        Map.toList symbolTable
+        |> List.map (fun (k, v) ->
+            let displayValue, valueType =
+                match v with
+                | Int i -> i.ToString(), "Int"
+                | Float f -> f.ToString(), "Float"
+                | Rational r -> r.ToString(), "Rational"
+            { Key = k; Value = v; Type = valueType }
+        )
 
 
 

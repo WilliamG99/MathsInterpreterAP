@@ -111,13 +111,14 @@
             <TabItem Header="Table">
                 <Grid>
                     <ListBox x:Name="Table"
-                                 Background="#1E1E1E"
-                                 Foreground="White"
-                                 FontSize="16"
-                                 Padding="10"
-                                 BorderThickness="0"/>
+                 Background="#1E1E1E"
+                 Foreground="White"
+                 FontSize="16"
+                 Padding="10"
+                 BorderThickness="0"/>
                 </Grid>
             </TabItem>
+
 
             <!-- Tab 3: Settings -->
             <TabItem Header="Plotting">

@@ -12,6 +12,7 @@ namespace MathsInterpreterGUI
         public MainWindow()
         {
             InitializeComponent();
+            UpdateVariableList();
         }
 
         // Toggle between numbers and algebraic letters
@@ -62,6 +63,25 @@ namespace MathsInterpreterGUI
             }
         }
 
+        private void UpdateVariableList()
+        {
+            try
+            {
+                var variables = Parser.getSymbolList();
+                Table.Items.Clear();
+                foreach (var variable in variables)
+                {
+                    // Create a string to display variable info
+                    string displayText = $"{variable.Key}: {variable.Value} ({variable.Type})";
+                    Table.Items.Add(displayText);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading variable list: " + ex.Message);
+            }
+        }
+
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
             // Clear the input field
@@ -85,23 +105,21 @@ namespace MathsInterpreterGUI
         {
             try
             {
-
+                // Assuming the expression was successfully parsed and evaluated
                 var result = MathsInterpreterBackend.Parser.interpret(ExpressionTextBox.Text);
                 ResultTextBlock.Text = "= " + result.ToString();
+                ErrorTextBlock.Text = "";
 
-                ErrorTextBlock.Text = ""; // Clear any previous error messages
+                // Update the variable list after calculation
+                UpdateVariableList();
             }
             catch (Exception ex)
             {
-                // Display the error message from the backend
                 ErrorTextBlock.Text = $"Error: {ex.Message}";
                 ResultTextBlock.Text = "";
-
             }
         }
-
     }
-
 }
 
 
