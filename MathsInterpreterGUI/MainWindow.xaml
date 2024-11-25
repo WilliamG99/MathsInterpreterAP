@@ -57,7 +57,7 @@
                         <Button x:Name="Num5Button" Content="5" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
                         <Button x:Name="Num6Button" Content="6" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
                         <Button Content="^" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Power" />
-                        <Button Content="/" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Divide" />
+                        <Button Content="÷" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Divide" />
 
                         <Button x:Name="Num1Button" Content="1" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
                         <Button x:Name="Num2Button" Content="2" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" />
