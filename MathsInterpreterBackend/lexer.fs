@@ -68,6 +68,7 @@ module Lexer =
             | ')' :: tail -> RPAREN :: scan tail
             | '=' :: tail -> EQUATION :: scan tail
             | 'p' :: 'i' :: tail -> PI :: scan tail
+            | 'π' :: tail -> PI :: scan tail
             | 'i' :: 'n' :: 't' :: ' ' :: tail -> TYPEINT :: scan tail
             | 'f' :: 'l' :: 'o' :: 'a' :: 't' :: ' ' :: tail -> TYPEFLOAT :: scan tail
             | 'r' :: 'a' :: 't' :: 'i' :: 'o' :: 'n' :: 'a' :: 'l' :: ' ' :: tail -> TYPERATIONAL :: scan tail
