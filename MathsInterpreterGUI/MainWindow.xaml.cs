@@ -19,57 +19,18 @@ namespace MathsInterpreterGUI
             InitializeComponent();
             InitializePlot();  // Call to initialize the plot area when the window opens
         }
-
-        private bool IsLetterMode = false; // Tracks whether the input mode is letter mode (variables) or numeric mode (numbers)
-
-        // Event handler for switching between numeric and letter mode when the toggle button is clicked
-        private void ToggleModeButton_Click(object sender, RoutedEventArgs e)
+        private void ShowSymbolsButton_Click(object sender, RoutedEventArgs e)
         {
-            // Toggle the mode
-            IsLetterMode = !IsLetterMode;
-
-            // Change the button text and switch the button labels accordingly
-            if (IsLetterMode)
-            {
-                ToggleModeButton.Content = "1↔x"; // Indicate switching to letter mode
-                UpdateButtonContentToLetters();   // Update button labels to letters in letter mode
-            }
-            else
-            {
-                ToggleModeButton.Content = "x↔1"; // Indicate switching back to numeric mode
-                UpdateButtonContentToNumbers();   // Update button labels to numbers in numeric mode
-            }
+            SymbolsPanel.Visibility = Visibility.Visible;
+            TrigPanel.Visibility = Visibility.Collapsed;
         }
 
-        // Updates button labels to map numbers to letters (for letter mode)
-        private void UpdateButtonContentToLetters()
+        private void ShowTrigButton_Click(object sender, RoutedEventArgs e)
         {
-            Num7Button.Content = "x";
-            Num8Button.Content = "y";
-            Num9Button.Content = "z";
-            Num4Button.Content = "a";
-            Num5Button.Content = "b";
-            Num6Button.Content = "c";
-            Num1Button.Content = "m";
-            Num2Button.Content = "n";
-            Num3Button.Content = "p";
-            Num0Button.Content = "q";
+            SymbolsPanel.Visibility = Visibility.Collapsed;
+            TrigPanel.Visibility = Visibility.Visible;
         }
 
-        // Updates button labels to map back to numbers (for numeric mode)
-        private void UpdateButtonContentToNumbers()
-        {
-            Num7Button.Content = "7";
-            Num8Button.Content = "8";
-            Num9Button.Content = "9";
-            Num4Button.Content = "4";
-            Num5Button.Content = "5";
-            Num6Button.Content = "6";
-            Num1Button.Content = "1";
-            Num2Button.Content = "2";
-            Num3Button.Content = "3";
-            Num0Button.Content = "0";
-        }
 
         // Event handler for inserting symbols (numbers or letters) into the input field when a button is clicked
         private void InsertSymbol_Click(object sender, RoutedEventArgs e)
