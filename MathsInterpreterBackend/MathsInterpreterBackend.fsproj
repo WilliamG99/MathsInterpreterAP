@@ -10,6 +10,11 @@
     <Compile Include="Lexer.fs" />
     <Compile Include="Parser.fs" />
     <Compile Include="Solver.fs" />
+    <Compile Include="Ploting.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
   </ItemGroup>
 
 </Project>
