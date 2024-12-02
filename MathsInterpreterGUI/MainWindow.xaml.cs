@@ -91,7 +91,6 @@ namespace MathsInterpreterGUI
             plotModel = MathsInterpreterBackend.Plotting.createPlotModel("Graph");
             PlotView.Model = plotModel;
         }
-
         private void OnPlotLineClick(object sender, RoutedEventArgs e)
         {
             try
@@ -105,13 +104,41 @@ namespace MathsInterpreterGUI
                     return;
                 }
 
+                // Parse the equation
                 var parsedEquation = MathsInterpreterBackend.Plotting.parseEquation(equation);
+
+                // Set the default range values
+                double x_min = -10000.0;  // Default value for x_min
+                double x_max = 10000.0;   // Default value for x_max
+                double Dx = 0.1;          // Default step size (Dx)
+
+                // Check if user has entered values for x_min and x_max
+                if (!string.IsNullOrEmpty(XMinInput.Text))
+                {
+                    if (!double.TryParse(XMinInput.Text, out x_min))
+                    {
+                        MessageBox.Show("Invalid input for x_min. Using default value (-10000).", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        x_min = -10000.0; // Set to default if parsing fails
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(XMaxInput.Text))
+                {
+                    if (!double.TryParse(XMaxInput.Text, out x_max))
+                    {
+                        MessageBox.Show("Invalid input for x_max. Using default value (10000).", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        x_max = 10000.0; // Set to default if parsing fails
+                    }
+                }
 
                 // Optionally clear the plot before adding the new equation
                 plotModel.Series.Clear();
 
-                MathsInterpreterBackend.Plotting.plotEquation(parsedEquation, plotModel);
-                plotModel.InvalidatePlot(true); // Refresh the plot
+                // Plot the equation with the provided or default values
+                MathsInterpreterBackend.Plotting.plotEquation(parsedEquation, x_min, x_max, Dx, plotModel);
+
+                // Refresh the plot
+                plotModel.InvalidatePlot(true);
             }
             catch (FormatException ex)
             {

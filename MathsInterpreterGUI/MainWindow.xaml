@@ -98,19 +98,27 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <!-- Graph Input -->
-                    <StackPanel Orientation="Horizontal" Margin="10">
+                    <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
                         <TextBox x:Name="GraphEquationInput" Width="200" Margin="5" FontSize="16" Padding="5" Background="#1E1E1E" Foreground="White" BorderBrush="#4CAF50" ToolTip="Enter a graph equation (e.g., y=2x+3)" />
                         <Button Content="Plot" Click="OnPlotLineClick" Margin="10,0,0,0" FontSize="16" Background="#4CAF50" Foreground="White" ToolTip="Plot the entered equation" />
                     </StackPanel>
 
+                    <!-- x_min and x_max input fields -->
+                    <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="1">
+                        <TextBox x:Name="XMinInput" Width="80" Margin="5" FontSize="16" Padding="5" Background="#1E1E1E" Foreground="White" BorderBrush="#4CAF50" ToolTip="Enter x_min" />
+                        <TextBox x:Name="XMaxInput" Width="80" Margin="5" FontSize="16" Padding="5" Background="#1E1E1E" Foreground="White" BorderBrush="#4CAF50" ToolTip="Enter x_max" />
+                    </StackPanel>
+
                     <!-- Plot Display -->
-                    <oxy:PlotView x:Name="PlotView" Margin="10" Grid.Row="1" />
+                    <oxy:PlotView x:Name="PlotView" Margin="10" Grid.Row="2" />
                 </Grid>
             </TabItem>
+
         </TabControl>
     </Grid>
 </Window>
