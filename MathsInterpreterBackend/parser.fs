@@ -98,6 +98,11 @@ module Parser =
                 let newTail = COMPLEX {Real = real; Imaginary = imaginary} :: tail
                 let (tLst, tval) = E newTail
                 (tLst, tval)
+            | LPAREN :: INTEGER real :: MINUS :: INTEGER imaginary :: IMAGINARY :: RPAREN :: tail ->
+                let newTail = COMPLEX {Real = real; Imaginary = -(imaginary)} :: tail
+                let (tLst, tval) = E newTail
+                (tLst, tval)
+
 
             // Implicit Multiplication
             | FLOAT value :: LPAREN :: tail ->
@@ -191,6 +196,9 @@ module Parser =
             newResult
         | Complex complex ->
             let newResult = complex.Real.ToString() + " + " + complex.Imaginary.ToString() + "i"
+            newResult
+        | ComplexRational complexRational ->
+            let newResult = complexRational.RealRational.Numerator.ToString() + "/" + complexRational.RealRational.Denominator.ToString() + complexRational.ImaginaryRational.Numerator.ToString() + "/" + complexRational.ImaginaryRational.Denominator.ToString() + "i"
             newResult
         | _ ->
             result.ToString()
