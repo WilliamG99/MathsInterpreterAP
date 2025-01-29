@@ -35,6 +35,8 @@ module Parser =
                 | Int i -> i.ToString(), "Int"
                 | Float f -> f.ToString(), "Float"
                 | Rational r -> r.ToString(), "Rational"
+                | Complex c -> c.ToString(), "Complex"
+                | ComplexRational cr -> cr.ToString(), "Complex Rational"
             { Key = k; Value = v; Type = valueType }
         )
 
@@ -183,6 +185,17 @@ module Parser =
                     (tLst, tval)
                 | _ ->
                     raise (System.Exception("Can only assign a rational"))
+            | TYPECOMPLEX :: VARIABLE vName :: EQUATION :: tail ->
+                let (tLst, tval) = E tail
+                match tval with
+                | Complex x ->
+                    symbolTable <- Map.add vName tval symbolTable
+                    (tLst, tval)
+                | ComplexRational x ->
+                    symbolTable <- Map.add vName tval symbolTable
+                    (tLst, tval)
+                | _ ->
+                    raise (System.Exception("Can only assign a complex"))
 
             | _ -> (E tList)
         VA tList
@@ -213,6 +226,8 @@ module Parser =
                 | Int i -> i.ToString(), "Int"
                 | Float f -> f.ToString(), "Float"
                 | Rational r -> r.ToString(), "Rational"
+                | Complex c -> c.ToString(), "Complex"
+                | ComplexRational cr -> cr.ToString(), "ComplexRational"
             { Key = k; Value = v; Type = valueType }
         )
 

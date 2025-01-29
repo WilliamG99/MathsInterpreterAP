@@ -76,7 +76,10 @@ module Lexer =
             | 'f' :: 'l' :: 'o' :: 'a' :: 't' :: ' ' :: tail -> TYPEFLOAT :: scan tail
             | 'r' :: 'a' :: 't' :: 'i' :: 'o' :: 'n' :: 'a' :: 'l' :: ' ' :: tail -> TYPERATIONAL :: scan tail
             | 'r' :: 'a' :: 't' :: ' ' :: tail -> TYPERATIONAL :: scan tail
+            | 'c' :: 'o' :: 'm' :: 'p' :: 'l' :: 'e' :: 'x' :: ' ' :: tail -> TYPECOMPLEX :: scan tail
+            | 'c' :: 'o' :: 'm' :: ' ' :: tail -> TYPECOMPLEX :: scan tail
             | 'i' :: tail -> IMAGINARY :: scan tail
+
             | c :: tail when isBlank c -> scan tail
             | c :: tail when isDigit c ->
                 let (iStr, iVal) = scInt(tail, intVal c)
