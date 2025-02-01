@@ -47,7 +47,7 @@ module Plotting =
     /// Evaluates a mathematical expression for a given x value
     let evaluate (x: float) (expression: string) : float =
         // Replace "x" in the expression with the current x value
-        let input = expression.Replace("x", x.ToString())
+        let input = expression.Replace("x", sprintf "(%f)" x)  // Ensure negative values are properly parenthesized
 
         // Tokenize and parse the input
         let tokens = Lexer.lexer input

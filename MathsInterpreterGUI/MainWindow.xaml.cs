@@ -124,7 +124,7 @@ namespace MathsInterpreterGUI
                     if (!double.TryParse(XMaxInput.Text, out x_max))
                     {
                         MessageBox.Show("Invalid input for x_max. Using default value (10).", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        x_max = 10.0; // Set to default if parsing fails
+                        x_max = 1000.0; // Set to default if parsing fails
                     }
                 }
 
