@@ -23,18 +23,25 @@ module Lexer =
         | RPAREN
         | PI
         | EQUATION
-        | VARIABLE of string  //assing pi and letters into the tokens
+        | VARIABLE of string  //assinge pi and letters into the tokens
         | TYPEINT
         | TYPEFLOAT
         | TYPERATIONAL
         | TYPECOMPLEX
+
+        | TYPERANGE
+        | RANGE of Range
+        | COMMA
+
+        | TYPEPLOT
+        | PLOT of string
 
     let lexError = System.Exception("Lexer error")
 
     let str2lst s = [for c in s -> c]
     let isBlank c = System.Char.IsWhiteSpace c
     let isDigit c = System.Char.IsDigit c
-    let isChar  c = System.Char.IsLetter c           // Checks if character is a letter
+    let isChar  c = System.Char.IsLetter c
     let intVal (c:char) = (int)((int)c - (int)'0')
 
     let rec scInt (iStr, iVal) = 
@@ -79,6 +86,11 @@ module Lexer =
             | 'c' :: 'o' :: 'm' :: 'p' :: 'l' :: 'e' :: 'x' :: ' ' :: tail -> TYPECOMPLEX :: scan tail
             | 'c' :: 'o' :: 'm' :: ' ' :: tail -> TYPECOMPLEX :: scan tail
             | 'i' :: tail -> IMAGINARY :: scan tail
+
+            | 'r' :: 'a' :: 'n' :: 'g' :: 'e' :: tail -> TYPERANGE :: scan tail
+            | ',' :: tail -> COMMA :: scan tail
+
+            | 'p' :: 'l' :: 'o' :: 't' :: tail -> TYPEPLOT :: scan tail
 
             | c :: tail when isBlank c -> scan tail
             | c :: tail when isDigit c ->

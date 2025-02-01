@@ -104,21 +104,18 @@ namespace MathsInterpreterGUI
                     return;
                 }
 
-                // Parse the equation
-                var parsedEquation = MathsInterpreterBackend.Plotting.parseEquation(equation);
-
                 // Set the default range values
-                double x_min = -10000.0;  // Default value for x_min
-                double x_max = 10000.0;   // Default value for x_max
-                double Dx = 0.1;          // Default step size (Dx)
+                double x_min = -1000.0;  // Default value for x_min
+                double x_max = 1000.0;   // Default value for x_max
+                double step = 0.1;     // Default step size
 
                 // Check if user has entered values for x_min and x_max
                 if (!string.IsNullOrEmpty(XMinInput.Text))
                 {
                     if (!double.TryParse(XMinInput.Text, out x_min))
                     {
-                        MessageBox.Show("Invalid input for x_min. Using default value (-10000).", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        x_min = -10000.0; // Set to default if parsing fails
+                        MessageBox.Show("Invalid input for x_min. Using default value (-10).", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        x_min = -1000.0; // Set to default if parsing fails
                     }
                 }
 
@@ -126,8 +123,8 @@ namespace MathsInterpreterGUI
                 {
                     if (!double.TryParse(XMaxInput.Text, out x_max))
                     {
-                        MessageBox.Show("Invalid input for x_max. Using default value (10000).", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        x_max = 10000.0; // Set to default if parsing fails
+                        MessageBox.Show("Invalid input for x_max. Using default value (10).", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        x_max = 10.0; // Set to default if parsing fails
                     }
                 }
 
@@ -135,7 +132,7 @@ namespace MathsInterpreterGUI
                 plotModel.Series.Clear();
 
                 // Plot the equation with the provided or default values
-                MathsInterpreterBackend.Plotting.plotEquation(parsedEquation, x_min, x_max, Dx, plotModel);
+                MathsInterpreterBackend.Plotting.plotExpression(equation, x_min, x_max, step, plotModel);
 
                 // Refresh the plot
                 plotModel.InvalidatePlot(true);

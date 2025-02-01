@@ -8,6 +8,8 @@ module Interpreter =
     type Rational = {Numerator: int; Denominator: int}
     type Complex = {Real: int; Imaginary: int}
     type ComplexRational = {RealRational: Rational; ImaginaryRational: Rational}
+    
+    type Range = {LowerBound : int; UpperBound: int}
 
     type Number =
     | Int of int
@@ -15,6 +17,8 @@ module Interpreter =
     | Rational of Rational
     | Complex of Complex
     | ComplexRational of ComplexRational
+
+    | Range of Range
 
 
     let rec gcf a b =
@@ -179,4 +183,5 @@ module Interpreter =
         | Float x -> Float (-x)
 
         | _ -> raise (System.Exception("Negation Error"))
+
 

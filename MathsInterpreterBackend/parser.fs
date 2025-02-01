@@ -3,6 +3,8 @@ namespace MathsInterpreterBackend
 
 module Parser =
 
+    open OxyPlot
+
     open Lexer
     open Interpreter
 
@@ -104,6 +106,15 @@ module Parser =
                 let newTail = COMPLEX {Real = real; Imaginary = -(imaginary)} :: tail
                 let (tLst, tval) = E newTail
                 (tLst, tval)
+            // Range
+            | TYPERANGE :: LPAREN :: INTEGER val1 :: COMMA :: INTEGER val2 :: RPAREN :: tail ->
+                let newTail = RANGE {LowerBound = val1; UpperBound = val2} :: tail
+                let (tLst, tval) = E newTail
+                (tLst, tval)
+            // Plot
+            | TYPEPLOT :: PLOT expression:: tail ->
+                let (tLst, tval) = E tail
+                (tLst, tval)
 
 
             // Implicit Multiplication
@@ -132,6 +143,8 @@ module Parser =
             | FLOAT value :: tail -> (tail, Float(value))
             | RATIONAL value :: tail -> (tail, Rational(value))
             | COMPLEX value :: tail -> (tail, Complex(value))
+            | RANGE value :: tail -> (tail, Range(value))
+
             | VARIABLE vName :: tail ->
                 let variableValue = lookupVariable vName
                 (tail, variableValue)
@@ -147,6 +160,8 @@ module Parser =
                 | RPAREN :: tail -> (tail, leftval)
                 | _ -> raise parseError
             | PI :: tail -> (tail, Float(Interpreter.piValue))     // Use piValue directly
+
+
             | _ -> raise parseError
 
         // Variable Assignment
