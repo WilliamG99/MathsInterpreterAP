@@ -63,11 +63,38 @@ module Plotting =
     let plotExpression (expression: string) (x_min: float) (x_max: float) (step: float) (plotModel: PlotModel) =
         let lineSeries = LineSeries(Title = expression)
 
-        // Evaluate the expression for a range of x values
-        for x in createRange x_min step x_max do
-            let y = evaluate x expression  // Evaluate the expression for the current x
-            lineSeries.Points.Add(DataPoint(x, y))
+        // Function to update the plot based on the current axis range
+        let updatePlot () =
+            let xAxis = plotModel.Axes.[0] :?> LinearAxis
+
+            // Determine the range to use
+            let rangeMin, rangeMax =
+                // If x_min or x_max is NaN, use the dynamic range
+                if System.Double.IsNaN(x_min) || System.Double.IsNaN(x_max) then
+                    xAxis.ActualMinimum, xAxis.ActualMaximum
+                else
+                    // Otherwise, use the user-defined range
+                    x_min, x_max+step
+
+            // Clear the existing points
+            lineSeries.Points.Clear()
+
+            // Re-evaluate the expression for the determined range
+            for x in createRange rangeMin step rangeMax do
+                let y = evaluate x expression
+                lineSeries.Points.Add(DataPoint(x, y))
+
+            // Refresh the plot
+            plotModel.InvalidatePlot(true)
+
+        // Initial plot with the determined range
+        updatePlot()
+
+        // Subscribe to the AxisChanged event for the X axis
+        let xAxis = plotModel.Axes.[0] :?> LinearAxis
+        xAxis.AxisChanged.Add(fun _ -> updatePlot())
 
         // Clear existing series and add the new one
         plotModel.Series.Clear()
         plotModel.Series.Add(lineSeries)
+

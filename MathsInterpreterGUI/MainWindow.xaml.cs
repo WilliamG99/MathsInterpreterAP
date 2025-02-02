@@ -104,38 +104,58 @@ namespace MathsInterpreterGUI
                     return;
                 }
 
-                // Set the default range values
-                double x_min = -1000.0;  // Default value for x_min
-                double x_max = 1000.0;   // Default value for x_max
-                double step = 0.1;     // Default step size
+                // Set the default step size
+                double step = 0.1; // Default step size
 
-                // Check if user has entered values for x_min and x_max
-                if (!string.IsNullOrEmpty(XMinInput.Text))
+                // Parse x_min and x_max, defaulting to NaN if empty or invalid
+                double x_min = double.NaN;
+                double x_max = double.NaN;
+
+                if (!string.IsNullOrEmpty(XMinInput.Text) && !double.TryParse(XMinInput.Text, out x_min))
                 {
-                    if (!double.TryParse(XMinInput.Text, out x_min))
-                    {
-                        MessageBox.Show("Invalid input for x_min. Using default value (-10).", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        x_min = -1000.0; // Set to default if parsing fails
-                    }
+                    MessageBox.Show("Invalid input for x_min. Using dynamic range.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //x_min = double.NaN;
                 }
 
-                if (!string.IsNullOrEmpty(XMaxInput.Text))
+                if (!string.IsNullOrEmpty(XMaxInput.Text) && !double.TryParse(XMaxInput.Text, out x_max))
                 {
-                    if (!double.TryParse(XMaxInput.Text, out x_max))
-                    {
-                        MessageBox.Show("Invalid input for x_max. Using default value (10).", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        x_max = 1000.0; // Set to default if parsing fails
-                    }
+                    MessageBox.Show("Invalid input for x_max. Using dynamic range.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //x_max = double.NaN;
                 }
 
                 // Optionally clear the plot before adding the new equation
                 plotModel.Series.Clear();
 
-                // Plot the equation with the provided or default values
+                // Plot the equation with the determined range
                 MathsInterpreterBackend.Plotting.plotExpression(equation, x_min, x_max, step, plotModel);
 
                 // Refresh the plot
                 plotModel.InvalidatePlot(true);
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show($"Invalid equation format: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void OnDerivationClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string equation = GraphEquationInput.Text;
+
+                // Early validation before attempting parsing
+                if (string.IsNullOrWhiteSpace(equation))
+                {
+                    MessageBox.Show("Please enter a valid equation.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                DerivativeOfFunction.Text = equation;
             }
             catch (FormatException ex)
             {

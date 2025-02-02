@@ -30,7 +30,7 @@
                             <TextBlock x:Name="ErrorTextBlock" FontSize="14" Foreground="Red" Text="" TextWrapping="Wrap" />
                         </StackPanel>
                     </Border>
-                    
+
                     <Border Grid.Row="2" Height="50">
                         <Button Content="Calculate" FontSize="16" Foreground="White" Background="#4CAF50" Margin="0,2,0,0"
                             HorizontalAlignment="Stretch" Click="CalculateButton_Click" ToolTip="Perform Calculation" />
@@ -48,13 +48,13 @@
 
                     </UniformGrid>
                     <UniformGrid Grid.Row="4" Rows="1" Columns="2" Margin="0,10,0,3">
-                            <!-- Toggle Buttons -->
+                        <!-- Toggle Buttons -->
                         <Button Content="Show Symbols" Name="ShowSymbolsButton" FontSize="16" Foreground="White" Background="#4CAF50" Margin="5"
                             Click="ShowSymbolsButton_Click" ToolTip="Show regular symbols like numbers and operators" />
                         <Button Content="Show Trigonometry" Name="ShowTrigButton" FontSize="16" Foreground="White" Background="#4CAF50" Margin="5"
                             Click="ShowTrigButton_Click" ToolTip="Show trigonometric functions like sin, cos, tan" />
                     </UniformGrid>
-                        <!-- Symbols Section -->
+                    <!-- Symbols Section -->
                     <StackPanel Name="SymbolsPanel" Grid.Row="5" Visibility="Hidden" Margin="0,0,0,0">
                         <UniformGrid Rows="3" Columns="4" Margin="0,0,0,0" Height="100">
                             <Button Content="π" FontSize="16" Foreground="White" Background="#4A4A4A" Margin="2" Click="InsertSymbol_Click" ToolTip="Insert Pi (π)" />
@@ -99,14 +99,15 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="9*"/>
                     </Grid.RowDefinitions>
 
                     <!-- Graph Input -->
-                    <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
+                    <StackPanel Orientation="Horizontal" Margin="10,10,10,10" Grid.Row="0">
                         <TextBox IsReadOnly="True" Text="f(x)=" Margin="5, 5, 0, 5" FontSize="16" Padding="5" BorderThickness="0" Width="43"/>
                         <TextBox x:Name="GraphEquationInput" Width="200" Margin="5" FontSize="16" Padding="5" Background="#1E1E1E" Foreground="White" BorderBrush="#4CAF50" ToolTip="Enter a graph equation (e.g., y=2x+3)" />
-                        <Button Content="Plot" Click="OnPlotLineClick" Margin="10,0,0,0" FontSize="16" Background="#4CAF50" Foreground="White" ToolTip="Plot the entered equation" />
+                        <Button Content="Plot" Click="OnPlotLineClick" Margin="10,0,0,0" FontSize="16" Background="#4CAF50" Foreground="White" ToolTip="Plot the entered equation" Height="30" />
                     </StackPanel>
 
                     <!-- x_min and x_max input fields -->
@@ -117,8 +118,15 @@
                         <TextBox x:Name="XMaxInput" Width="71" Margin="5" FontSize="16" Padding="5" Background="#1E1E1E" Foreground="White" BorderBrush="#4CAF50" ToolTip="Enter x_max" />
                     </StackPanel>
 
+                    <!-- Function Derivative -->
+                    <StackPanel Orientation="Horizontal" Margin="5,10,10,10" Grid.Row="2">
+                        <TextBox IsReadOnly="True" Text="f'(x)=" Margin="5, 5, 0, 5" FontSize="16" Padding="5" BorderThickness="0" Width="48"/>
+                        <TextBox IsReadOnly="True" x:Name="DerivativeOfFunction" Width="200" Margin="5" FontSize="16" Padding="5" Background="#1E1E1E" Foreground="White" BorderBrush="#4CAF50" />
+                        <Button Content="Derive" Click="OnDerivationClick" Margin="10,0,0,0" FontSize="16" Background="#4CAF50" Foreground="White" Width="58" Height="30" />
+                    </StackPanel>
+
                     <!-- Plot Display -->
-                    <oxy:PlotView x:Name="PlotView" Margin="10" Grid.Row="2" />
+                    <oxy:PlotView x:Name="PlotView" Margin="10,10,10,0" Grid.Row="3" Height="323" VerticalAlignment="Top" />
                 </Grid>
             </TabItem>
 
