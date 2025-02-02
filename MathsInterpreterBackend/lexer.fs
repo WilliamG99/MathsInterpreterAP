@@ -107,3 +107,17 @@ module Lexer =
 
         scan (str2lst input)
 
+    let tokenToString token =
+        match token with
+        | INTEGER n -> string n
+        | FLOAT f -> string f
+        | VARIABLE v -> v
+        | PLUS -> "+"
+        | MINUS -> "-"
+        | MULTIPLY -> "*"
+        | DIVIDE -> "/"
+        | POWER -> "^"
+        | LPAREN -> "("
+        | RPAREN -> ")"
+        | _ -> "?"
+

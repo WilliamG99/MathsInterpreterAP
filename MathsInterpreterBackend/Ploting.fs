@@ -63,6 +63,9 @@ module Plotting =
     let plotExpression (expression: string) (x_min: float) (x_max: float) (step: float) (plotModel: PlotModel) =
         let lineSeries = LineSeries(Title = expression)
 
+        // Set a default step value if step is NaN
+        let step = if System.Double.IsNaN(step) then 0.1 else step
+
         // Function to update the plot based on the current axis range
         let updatePlot () =
             let xAxis = plotModel.Axes.[0] :?> LinearAxis
@@ -74,7 +77,7 @@ module Plotting =
                     xAxis.ActualMinimum, xAxis.ActualMaximum
                 else
                     // Otherwise, use the user-defined range
-                    x_min, x_max+step
+                    x_min, x_max
 
             // Clear the existing points
             lineSeries.Points.Clear()
@@ -98,3 +101,53 @@ module Plotting =
         plotModel.Series.Clear()
         plotModel.Series.Add(lineSeries)
 
+    let cleanUpExpression (expr: string) : string =
+        expr
+        |> fun s -> s.Replace("+ -", "-")  // Change "+ -" to just "-"
+        |> fun s -> s.Replace(" + 0", "").Replace("0 + ", "") // Remove "+ 0" cases
+        |> fun s -> if s.StartsWith("+ ") then s.Substring(2) else s // Remove leading "+ " if present
+
+    let deriveExpression (expression: string) : string =
+        // Tokenize the input expression
+        let tokens = lexer expression
+
+        // Differentiate the tokens and return the result as a string
+        let (derivative, _) = differentiate tokens
+
+        // Clean up unnecessary symbols
+        (cleanUpExpression derivative)
+
+
+    /// Plots the tangent line to a function at a specific point
+    let plotTangentLine (expression: string) (x_point: float) (plotModel: PlotModel) =
+        // Evaluate the function at the given point to get the y-coordinate
+        let y_point = evaluate x_point expression
+
+        // Compute the derivative (slope) at the given point
+        // Tokenize the input expression
+        let tokens = lexer expression
+        // Differentiate the tokens and return the result as a string
+        let (derivative, _) = differentiate tokens
+        // Evaluate the derivative at the given point
+        let slope = evaluate x_point derivative
+
+        // Compute the y-intercept of the tangent line using the point-slope form: y = mx + b
+        let y_intercept = y_point - slope * x_point
+
+        // Create a LineSeries for the tangent line
+        let tangentLineSeries = LineSeries(Title = sprintf "Tangent at x = %f" x_point)
+
+        // Evaluate the tangent line for a range of x values
+        let x_min = plotModel.Axes.[0].ActualMinimum
+        let x_max = plotModel.Axes.[0].ActualMaximum
+        for x in createRange x_min 0.1 x_max do
+            let y = slope * x + y_intercept
+            tangentLineSeries.Points.Add(DataPoint(x, y))
+
+        // Add the tangent line to the plot
+        plotModel.Series.Add(tangentLineSeries)
+
+        //plotModel.Title <- sprintf "Tangent at x point: %f" x_point
+
+        // Refresh the plot
+        plotModel.InvalidatePlot(true)

@@ -232,6 +232,70 @@ module Parser =
             result.ToString()
 
 
+    let rec differentiate tokens =
+        // Helper function to combine terms by exponent
+        let simplify terms =
+            let groupTerms terms =
+                terms
+                |> List.fold (fun acc (exp, coeff) ->
+                    match Map.tryFind exp acc with
+                    | Some existingCoeff -> Map.add exp (existingCoeff + coeff) acc
+                    | None -> Map.add exp coeff acc
+                ) Map.empty
+            groupTerms terms
+            |> Map.toList
+            |> List.sortBy (fun (exp, _) -> -exp)
+            |> List.map (fun (exp, coeff) ->
+                match exp with
+                | 0 -> sprintf "%d" coeff
+                | 1 -> sprintf "%dx" coeff
+                | _ -> sprintf "%dx^%d" coeff exp
+            )
+            |> String.concat " + "
+
+        // Recursive helper function to differentiate tokens
+        let rec differentiateHelper terms tokens sign =
+            match tokens with
+            | [] -> simplify terms, [] // Return simplified terms
+
+            // Handle power rule: c*x^n → (c*n) * x^(n-1)
+            | INTEGER c :: VARIABLE "x" :: POWER :: INTEGER n :: tail ->
+                let newExponent = n - 1
+                let newCoefficient = sign * c * n
+                differentiateHelper ((newExponent, newCoefficient) :: terms) tail 1
+
+            // Handle linear term: c*x → c
+            | INTEGER c :: VARIABLE "x" :: tail ->
+                differentiateHelper ((0, sign * c) :: terms) tail 1
+
+            // Handle constants: constant → 0
+            | INTEGER c :: tail ->
+                differentiateHelper ((0, 0) :: terms) tail 1
+
+            // Handle power rule: x^n → n * x^(n-1)
+            | VARIABLE "x" :: POWER :: INTEGER n :: tail ->
+                let newExponent = n - 1
+                let coefficient = sign * n
+                differentiateHelper ((newExponent, coefficient) :: terms) tail 1
+
+            // Handle single x: x → 1
+            | VARIABLE "x" :: tail ->
+                differentiateHelper ((0, sign * 1) :: terms) tail 1
+
+            // Handle addition: (d/dx) (A + B) = dA/dx + dB/dx
+            | PLUS :: tail ->
+                differentiateHelper terms tail 1
+
+            // Handle subtraction: (d/dx) (A - B) = dA/dx - dB/dx
+            | MINUS :: tail ->
+                differentiateHelper terms tail (-1)
+
+            | _ -> raise (System.Exception("Unsupported token in differentiation"))
+
+        // Start differentiating with an empty list of terms and a positive sign
+        differentiateHelper [] tokens 1
+
+
 
     let getSymbolList () =
         Map.toList symbolTable

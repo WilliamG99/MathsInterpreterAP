@@ -105,7 +105,7 @@ namespace MathsInterpreterGUI
                 }
 
                 // Set the default step size
-                double step = 0.1; // Default step size
+                double step = double.NaN;
 
                 // Parse x_min and x_max, defaulting to NaN if empty or invalid
                 double x_min = double.NaN;
@@ -121,6 +121,12 @@ namespace MathsInterpreterGUI
                 {
                     MessageBox.Show("Invalid input for x_max. Using dynamic range.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
                     //x_max = double.NaN;
+                }
+
+                if (!string.IsNullOrEmpty(StepAmount.Text) && !double.TryParse(StepAmount.Text, out step))
+                {
+                    MessageBox.Show("Invalid input for step. Using default.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //step = double.NaN;
                 }
 
                 // Optionally clear the plot before adding the new equation
@@ -155,7 +161,7 @@ namespace MathsInterpreterGUI
                     return;
                 }
 
-                DerivativeOfFunction.Text = equation;
+                DerivativeOfFunction.Text = MathsInterpreterBackend.Plotting.deriveExpression(equation);
             }
             catch (FormatException ex)
             {
@@ -167,5 +173,36 @@ namespace MathsInterpreterGUI
             }
         }
 
+        private void OnTangentClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string equation = GraphEquationInput.Text;
+                // convert the text to a double
+                float xPoint = float.Parse(TangentPoint.Text);
+
+                // Early validation before attempting parsing
+                if (string.IsNullOrWhiteSpace(equation))
+                {
+                    MessageBox.Show("Please enter a valid equation.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                MathsInterpreterBackend.Plotting.plotTangentLine(equation, xPoint, plotModel);
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show($"Invalid equation format: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
