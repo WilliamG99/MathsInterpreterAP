@@ -120,6 +120,9 @@ module Plotting =
 
     /// Plots the tangent line to a function at a specific point
     let plotTangentLine (expression: string) (x_point: float) (plotModel: PlotModel) =
+
+        let x_point = if System.Double.IsNaN(x_point) then 0.0 else x_point
+
         // Evaluate the function at the given point to get the y-coordinate
         let y_point = evaluate x_point expression
 

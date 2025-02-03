@@ -178,16 +178,18 @@ namespace MathsInterpreterGUI
             try
             {
                 string equation = GraphEquationInput.Text;
-                // convert the text to a double
-                float xPoint = float.Parse(TangentPoint.Text);
+                double xPoint = double.NaN;
 
-                // Early validation before attempting parsing
                 if (string.IsNullOrWhiteSpace(equation))
                 {
                     MessageBox.Show("Please enter a valid equation.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
+                if (!string.IsNullOrEmpty(TangentPoint.Text))
+                {
+                    xPoint = float.Parse(TangentPoint.Text);
+                }
                 MathsInterpreterBackend.Plotting.plotTangentLine(equation, xPoint, plotModel);
             }
             catch (FormatException ex)

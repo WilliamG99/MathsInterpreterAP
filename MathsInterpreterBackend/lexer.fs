@@ -19,8 +19,8 @@ module Lexer =
         | REMAINDER
         | POWER
         | IMAGINARY             // For complex numbers
-        | LPAREN
-        | RPAREN
+        | LEFTPARENTHESIS
+        | RIGHTRPARENTHESIS
         | PI
         | EQUATION
         | VARIABLE of string  //assinge pi and letters into the tokens
@@ -38,28 +38,28 @@ module Lexer =
 
     let lexError = System.Exception("Lexer error")
 
-    let str2lst s = [for c in s -> c]
-    let isBlank c = System.Char.IsWhiteSpace c
-    let isDigit c = System.Char.IsDigit c
+    let stringToCharList  s = [for c in s -> c]
+    let isWhitespace c = System.Char.IsWhiteSpace c
+    let isNumeric  c = System.Char.IsDigit c
     let isChar  c = System.Char.IsLetter c
-    let intVal (c:char) = (int)((int)c - (int)'0')
+    let charToInt ch = int ch - int '0'
 
-    let rec scInt (iStr, iVal) = 
+    let rec parseInteger (iStr, iVal) = 
         match iStr with
-        | c::tail when isDigit c -> scInt(tail, 10*iVal+(intVal c))
+        | c::tail when isNumeric c -> parseInteger(tail, 10*iVal+(charToInt c))
         | _ -> (iStr, iVal)
 
-    let rec scFloat fStr fVal factor =
+    let rec parseFloat fStr fVal factor =
         match fStr with
-        | c::tail when isDigit c -> 
-            let newFVal = fVal + ((float (intVal c)) / factor)
-            scFloat tail newFVal (factor * 10.0)
+        | c::tail when isNumeric c -> 
+            let newFVal = fVal + ((float (charToInt c)) / factor)
+            parseFloat tail newFVal (factor * 10.0)
         | _ -> (fStr, fVal)
 
     // For parsing variable identidiers
-    let rec scChar(iStr, vName:string) =
+    let rec parseChar(iStr, vName:string) =
         match iStr with
-        | c::tail when isChar c -> scChar(tail, vName + c.ToString())
+        | c::tail when isChar c -> parseChar(tail, vName + c.ToString())
         | _ -> (iStr, vName)
 
 
@@ -74,8 +74,8 @@ module Lexer =
             | '%' :: tail -> MODULO :: scan tail
             | '^' :: tail -> POWER :: scan tail
             | '/' :: tail -> FRACTION :: scan tail
-            | '(' :: tail -> LPAREN :: scan tail
-            | ')' :: tail -> RPAREN :: scan tail
+            | '(' :: tail -> LEFTPARENTHESIS :: scan tail
+            | ')' :: tail -> RIGHTRPARENTHESIS :: scan tail
             | '=' :: tail -> EQUATION :: scan tail
             | 'p' :: 'i' :: tail -> PI :: scan tail
             | 'π' :: tail -> PI :: scan tail
@@ -92,20 +92,20 @@ module Lexer =
 
             | 'p' :: 'l' :: 'o' :: 't' :: tail -> TYPEPLOT :: scan tail
 
-            | c :: tail when isBlank c -> scan tail
-            | c :: tail when isDigit c ->
-                let (iStr, iVal) = scInt(tail, intVal c)
-                match iStr with
+            | c :: tail when isWhitespace c -> scan tail
+            | c :: tail when isNumeric c ->
+                let (remainingString, intVal) = parseInteger(tail, charToInt c)
+                match remainingString with
                 | '.' :: dTail ->
-                    let (fStr, fVal) = scFloat dTail 0.0 10.0
-                    FLOAT ((float iVal) + fVal) :: scan fStr
-                | _ -> INTEGER iVal :: scan iStr
+                    let (fStr, fVal) = parseFloat dTail 0.0 10.0
+                    FLOAT ((float intVal) + fVal) :: scan fStr
+                | _ -> INTEGER intVal :: scan remainingString
             | c :: tail when isChar c -> 
-                let (iStr, vName) = scChar(tail, c.ToString())
-                VARIABLE vName :: scan iStr
+                let (remainingString, varviableName) = parseChar(tail, c.ToString())
+                VARIABLE varviableName :: scan remainingString
             | _ -> raise lexError  // Raise an error for unrecognized characters
 
-        scan (str2lst input)
+        scan (stringToCharList  input)
 
     let tokenToString token =
         match token with
@@ -117,7 +117,7 @@ module Lexer =
         | MULTIPLY -> "*"
         | DIVIDE -> "/"
         | POWER -> "^"
-        | LPAREN -> "("
-        | RPAREN -> ")"
+        | LEFTPARENTHESIS -> "("
+        | RIGHTRPARENTHESIS -> ")"
         | _ -> "?"
 
