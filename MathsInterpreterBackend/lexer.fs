@@ -16,7 +16,6 @@ module Lexer =
         | DIVIDE
         | MODULO
         | FRACTION              // For rationals
-        | REMAINDER
         | POWER
         | IMAGINARY             // For complex numbers
         | LEFTPARENTHESIS
@@ -77,6 +76,7 @@ module Lexer =
             | '(' :: tail -> LEFTPARENTHESIS :: scan tail
             | ')' :: tail -> RIGHTRPARENTHESIS :: scan tail
             | '=' :: tail -> EQUATION :: scan tail
+
             | 'p' :: 'i' :: tail -> PI :: scan tail
             | 'π' :: tail -> PI :: scan tail
             | 'i' :: 'n' :: 't' :: ' ' :: tail -> TYPEINT :: scan tail
